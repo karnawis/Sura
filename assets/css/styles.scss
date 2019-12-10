@@ -1,0 +1,424 @@
+/* ==========================================================================
+   Name: Main Stylesheet
+   Author: Sura Karnawi
+   Date: May 2019
+   Minify https://cssminifier.com/
+   ========================================================================== */
+
+/*
+Color
+*/
+
+*, a{
+  outline: none;
+}
+$color-red: #ff5252;
+$color-white: #fff;
+$color-light-red: #ff7878;
+
+.color-white { color: $color-white; }
+.color-green { color: #1F914D; }
+.color-yellow { color: #FEC43B; }
+.color-red { color: $color-red; }
+.bg-color-red { background-color: #ff5252; }
+.bg-color-green { background-color: #1F914D; }
+.bg-color-yellow { background-color: #FEC43B; }
+.bg-color-white { background-color: #fff; }
+.bg-blk-transparent {  background: rgba(0,0,0,0.5);}
+
+/* Mixins */
+@mixin transition($what: all, $time: 0.2s, $how: ease-in-out) {
+  -webkit-transition: $what $time $how;
+  -moz-transition:    $what $time $how;
+  -ms-transition:     $what $time $how;
+  -o-transition:      $what $time $how;
+  transition:         $what $time $how;
+}
+
+/*
+Layout
+*/
+body {
+    overflow-x: hidden;
+    padding-top: 55px;
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+section,footer, header {
+  overflow: hidden;
+}
+
+.top-space{
+    margin-top: 15px;
+}
+
+.flex {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+/* Header  */
+
+.jumbotron .row{
+  display: flex;
+  .col-xs-7 {
+    flex: 1;
+  }
+}
+.bg-dotted {
+  background-position: right;
+  background-position-y: 30px;
+  /* dotted backgroun */
+  background: radial-gradient($color-red 20%,transparent 21%),-webkit-radial-gradient($color-red 20%,transparent 21%),0 0;
+  background-position: 0 0,7px 7px;
+  background-origin: padding-box;
+  background-clip: border-box;
+  background-size: 14px 14px;
+  background-attachment: fixed;
+}
+.sticky-banner {
+  padding-top: 18px;
+  background-image: url(../img/banner-bg.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  min-height: 350px;
+  position: relative;
+  background-attachment: fixed;
+  background-position: left;
+
+  &.cake {
+    background-image: url(../img/cv/jordane-mathieu-1141275-unsplash.jpg);
+    background-position: center top;
+  }
+}
+
+
+.navbar-inverse {
+  background-color: $color-white;
+  border-color: $color-white;
+  .navbar-toggle{
+    border: none;
+    &:hover,&:focus{
+      border-color: $color-white;
+      background-color: $color-white;
+    }
+    .icon-bar {
+      border-radius: 1px;
+      background-color: $color-red;
+      border-color: $color-red;
+      display: block;
+      height: 5px;
+      margin-top: 5px;
+      width: 45px;
+    }
+  }
+  .navbar-nav {
+    li{
+      a {
+      color: $color-red;
+      font-size: 19px;
+      @include transition(all,0.2s,ease-out);
+      &:hover, &:focus{
+        color: $color-red;
+      }
+    }
+    &.active>a,
+    &.active>a:focus,
+    &.active>a:hover{
+        font-size: 20px;
+        color: $color-red;
+        background-color: transparent;
+        border-bottom: 1px solid $color-red;
+      }
+    }
+  }
+}
+
+/* drop down */
+@media (max-width: 767px){
+  .navbar-inverse{
+    .navbar-collapse {
+      background-color: $color-red;
+      border-color: $color-red;
+      ul.nav.navbar-nav{
+        margin-left: 10px;
+        width: 100%;
+        li {
+          width: 100%;
+            a{
+            color: $color-white;
+            opacity: 0.7;
+            width: 100%;
+            &:focus,
+            &:hover{
+              color: $color-white;
+              outline: none;
+              opacity: 1;
+            }
+          }
+          &.active>a,
+          &.active>a:focus,
+          &.active>a:hover{
+            background-color: transparent;
+            border-bottom: 0px solid $color-white;
+            color: $color-white;
+            font-size: 22px;
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}
+
+.navbar-brand{
+  //background: url('../img/sura-logo.png') no-repeat;
+  //background-size: 100%;
+  background-color: $color-white;
+  height: 40px;
+  margin: 10px;
+  padding: 10px;
+  position: absolute;
+  width: 200px;
+  h1 {
+    font-size: 20px;
+    margin:0;
+    text-align: center;
+  }
+}
+.navbar-nav {
+    float: left;
+    margin: 0;
+    margin-left: 192px;
+}
+#floating-house{
+  display: block;
+  float: right;
+  max-width: 200px;
+  width: 36%;
+}
+.cards {
+
+  h3 {
+   text-align: center;
+   color: $color-white;
+  }
+  p {
+    //color: $color-white;
+    text-align: justify;
+  }
+  .card {
+    background-color: $color-red;
+    border-radius: 15px;
+    margin: 20px;
+    padding: 5px;
+    min-height: 200px;
+    .icon-bg{
+      border: 1px solid $color-light-red;
+      border-radius: 15px;
+      padding: 10px;
+      &.icon-spade{background: url(../img/icons/icon-spade.png), url(../img/icons/icon-spade.png);}
+      &.icon-diamond{background: url(../img/icons/icon-diamond.png), url(../img/icons/icon-diamond.png);}
+      &.icon-club{background: url(../img/icons/icon-club.png),url(../img/icons/icon-club.png);}
+      &.icon-heart{background: url(../img/icons/icon-heart.png),url(../img/icons/icon-heart.png);}
+      &.icon-spade,&.icon-diamond,  &.icon-club,   &.icon-heart{
+          background-position: 2% 2%, 98% 98%;
+          background-repeat: no-repeat;
+          background-size: 19px;
+        }
+      }
+    @media (min-width: 768px) {
+      width: 22%;
+      margin: 1%;
+      padding: 10px;
+    }
+  }
+}
+.spade-card{
+  background: url(../img/icons/icon-card-club.png) no-repeat;
+  background-size: 5%;
+  background-position: 98% 15px;
+}
+footer {
+    a{
+    margin: 10px;
+    font-size: 35px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    i{
+      color: $color-red;
+      &:hover {
+        color: #337ab7;
+      }
+    }
+  }
+  ul {
+    text-align: center;
+    list-style: none;
+    li {
+      padding: 0 10px;
+      display: inline-block;
+    }
+  }
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6, .nav > li >a, .navbar-brand {
+    font-family: 'Cookie', cursive;
+    font-family: 'Indie Flower', cursive;
+    color: $color-red;
+}
+
+.jumbotron {
+  h1 {
+    font-size: 50px;
+    color : $color-white;
+  }
+ p {
+    padding: 0 9px;
+    font-size: 23px;
+    color: $color-white;
+  }
+}
+p {
+  font-size: 16px;
+  font-weight: 200;
+}
+blockquote {
+    font-size: 18.5px;
+    font-weight: 200;
+}
+h1.color-red, p.color-red, h2.color-red{
+  color: $color-red;
+}
+#contact h2 { color: $color-white; }
+#quote {
+    font-style: italic;
+    color: #000;
+}
+/* Contact section */
+.error ul li {
+    list-style: none;
+}
+section#contact {
+  background: $color-red;
+  color: white;
+  a, h1{
+    color: $color-white;
+  }
+ .btn-success, .btn-submit {
+    padding: 12px 60px;
+    background-color: $color-white;
+    border-color: $color-white;
+    color: $color-red;
+
+  }
+}
+
+.btn-download {
+  font-size: 20px;
+  height: 90px;
+  background: url(../img/cv/cake.png) no-repeat;
+  background-position: left;
+  background: #ff5252 url(../img/cv/cake.png) no-repeat;
+  background-position: right center;
+  line-height: 77px;
+  text-align: left;
+  width: 300px;
+}
+.btn-red {
+  background-color: $color-red;
+  color: $color-white !important;
+}
+
+.help-block.text-danger {
+    background-color: #FEC43B;
+    color: black;
+    border-radius: 4px;
+}
+.help-block ul {
+    padding: 2px 12px;
+}
+
+/* ---- Masonry---- */
+.grid-item { width: 200px;  border: 3px solid $color-white; }
+.grid-item--width2 { width: 300px; }
+.grid-item img{width: 100%;}
+
+
+/*==========  Mobile First Method  ==========*/
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px) {
+
+}
+.jumbotron {
+  overflow: hidden;
+  background-attachment: fixed;
+  background-size: cover;
+  //background-image: url('../img/sura karnawi sitting in a cafe in bath uk.jpg');
+  background-color: white;
+  background-image: url('../img/sura-karnawi-banner-paint-brushes-by-yannis-papanastasopoulos-586848-unsplash.jpg');
+  background-repeat: no-repeat;
+  min-height: 300px;
+}
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+    .jumbotron {
+
+      h1 {
+        font-size: 30px;
+      }
+     p {
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+      min-height: 200px;
+      padding-bottom: 50px;
+    }
+    .sticky-banner {
+      display: none;
+    }
+    .grid-item { width: 135px; }
+    .grid-item--width2 { width: 200px; }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px)  and (min-width : 480px){
+  .jumbotron {
+
+    h1 {
+      font-size: 40px;
+    }
+    p {
+      font-size: 20px;
+    }
+    min-height: 240px;
+    padding-bottom: 10px;
+  }
+}
+
+/* Medium Devices, Desktops */
+
+.img-id-rounded {
+  width:100px;
+  border-radius: 50px;
+}
+
+@media (min-width: 992px) {
+  .img-id-rounded {
+    width: 200px;
+    border-radius: 100px;
+  }
+}

@@ -1,0 +1,4 @@
+User-Agent: *
+Disallow: /mail/
+Disallow: /*.xml
+Disallow: /*.json

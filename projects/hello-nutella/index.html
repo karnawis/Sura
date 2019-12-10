@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="shortcut icon" type="x-icon" href="favicon.ico" >
+		<title>Hello nutella!</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenMax.min.js"></script>
+		<style type="text/css">
+			@import url(http://fonts.googleapis.com/css?family=Open+Sans:800);
+			body { padding: 30px; font-family: 'Open Sans', sans-serif; }
+
+			#box {
+				border: 1px solid hotpink; width: 500ps; height: 500px; border-radius: 25px; text-align: center; position: relative;
+				margin: auto;
+				display: block;
+				padding: 25px;
+				overflow: hidden;
+
+			}
+			h1, h2 , h3 {
+				position: absolute;
+				left:0;
+				right:0;
+				margin-left:auto;
+				margin-right:auto;
+				color: hotpink;
+
+			}
+			h1{
+				top: 30px;
+				color: black;
+			}
+			h2{
+				top: -90px;
+			}
+			h3 {
+				top: 150px;
+				top: -200px;
+			}
+			#icecream {
+				width: 105px;
+				height: auto;
+				position: absolute;
+				margin: auto;
+				bottom: 30px;
+				bottom: -150px;
+				left: 27%;
+			}
+			#hello-kittie{
+				display: block;
+				margin: auto;
+				position: absolute;
+				bottom: 30px;
+				left: 48%;
+			}
+			#breeze {
+				width: 100%;
+				height: 400px;
+				background: url(breeze.png) no-repeat 0px 0px;
+				opacity: 0.3;
+			}
+			#heart{
+				display: block;
+				width: 200px;
+				height: auto;
+				position: absolute;
+				bottom: 20%;
+				z-index: -90;
+				left:0;
+				right:0;
+				margin-left:auto;
+				margin-right:auto;
+				opacity: 0.1;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<h1>Are you hungry?</h1>
+			<h2 id="txt2">I got food for you</h2>
+			<h3>For Real!!</h3>
+			<img id="hello-kittie" src="kitty.png" alt="hello titty" />
+			<img id="icecream"  src="nutella.png" alt="nutella"/>
+			<img id="heart" src="funky-pink-heart.png" alt="heart" />
+			<div id="breeze"></div>
+		</div>
+
+		<script>
+			(function(){
+				var tl = new TimelineMax();
+
+				tl.from('h1', 2.5 , {top: -30, ease: Power2.easeOut })
+				.to('h2', 2, {top : 100,  ease: Power2.easeOut })
+				.to('h3', 3, {top : 150,  ease: Elastic.easeOut.config(1, 0.3), y: 0  })
+				.to('#icecream', 3, { bottom : 40, scale:1.5 , ease: Back.easeOut.config(1.7), y: 0},'cta')
+				.to('#hello-kittie', 3, { left : 400, ease: Power2.easeOut }, '-=2.5')
+				.to('#heart', 0.7, { opacity : 0.7, scale: 1.5, rotation: 45, ease: Elastic.easeOut.config(1, 0.3), y: 0  });
+				//tl.seek('cta');
+
+				var tl2 = new TimelineMax({repeat: -1});
+				tl2.to('#breeze', 25, {backgroundPositionX: 800, ease: Power2.easeOut });
+			}());
+		</script>
+	</body>
+</html>
