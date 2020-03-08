@@ -1,0 +1,103 @@
+// Mixins
+
+@mixin text-shadow($color) {
+    text-shadow:
+            0 0 5px     $color,
+            0 0 10px    $color,
+            0 0 20px    $color,
+            0 0 40px    $color,
+            0 0 80px    $color,
+            0 0 90px    $color,
+            0 0 100px   $color,
+            0 0 150px   $color;
+}
+
+@mixin box-shadow($color) {
+    box-shadow:
+            0 0 5px     $color,
+            0 0 10px    $color,
+            0 0 20px    $color,
+            0 0 40px    $color,
+            0 0 80px    $color,
+            0 0 90px    $color,
+            0 0 100px   $color;
+}
+
+@mixin transition-all() {
+    -webkit-transition: all .35s;
+    -moz-transition: all .35s;
+    transition: all .35s;
+}
+
+@mixin background-cover() {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+@mixin button-variant($color, $background, $border) {
+    color: $color;
+    border-color: $border;
+    background-color: $background;
+    &:focus,
+    &.focus {
+        color: $color;
+        border-color: darken($border, 25%);
+        background-color: darken($background, 10%);
+    }
+    &:hover {
+        color: $color;
+        border-color: darken($border, 12%);
+        background-color: darken($background, 10%);
+    }
+    &:active,
+    &.active,
+    .open > &.dropdown-toggle {
+        color: $color;
+        border-color: darken($border, 12%);
+        background-color: darken($background, 10%);
+        &:hover,
+        &:focus,
+        &.focus {
+            color: $color;
+            border-color: darken($border, 25%);
+            background-color: darken($background, 17%);
+        }
+    }
+    &:active,
+    &.active,
+    .open > &.dropdown-toggle {
+        background-image: none;
+    }
+    &.disabled,
+    &[disabled],
+    fieldset[disabled] & {
+        &:hover,
+        &:focus,
+        &.focus {
+            border-color: $border;
+            background-color: $background;
+        }
+    }
+    .badge {
+        color: $background;
+        background-color: $color;
+    }
+}
+
+@mixin heading-font {
+    font-family: 'Francois One', sans-serif !important;
+    font-weight: 200;
+    letter-spacing: 1px;
+}
+
+@mixin body-font {
+    font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif' !important;
+}
+
+@mixin alt-font {
+    font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif' !important;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}

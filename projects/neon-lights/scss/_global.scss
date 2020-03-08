@@ -1,0 +1,140 @@
+// Global styling for this template
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    @include body-font;
+}
+
+a {
+    color: $theme-primary;
+    @include transition-all;
+    &:hover,
+    &:focus {
+        color: darken($theme-primary, 10%);
+    }
+}
+
+hr {
+    max-width: 100px;
+    margin: 25px auto 0;
+    border-width: 1px;
+    border-color: fade-out($gray-darker, .9);
+}
+
+hr.light {
+    border-color: white;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    @include heading-font;
+}
+
+h1 {
+  font-size: 60px;
+}
+h2 {
+  font-size: 40px;
+}
+
+h1 , h2, h3, h4, h5 ,h6 {
+  font-family: 'Anton', sans-serif !important;
+  font-family: 'Monoton', cursive !important;
+  font-family: 'Audiowide', cursive !important;
+  text-align: center;
+}
+
+p {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+section {
+    padding: 100px 0;
+    h2 {
+        font-size: 50px;
+    }
+}
+
+table.table {
+  background: $white;
+}
+
+.fa.fa-envelope {
+  color: $white;
+  font-size: 50px;
+}
+
+.fa-info-circle {
+  color: $light-blue;
+}
+
+.color-green {
+  color: lighten($green, 30%);
+}
+
+.bg-green {
+  background-color: $green;
+}
+
+.color-pink {
+  color: lighten($pink, 30%);
+}
+
+.bg-pink {
+  background-color: $pink;
+}
+
+.color-yellow {
+  color: lighten($yellow, 30%);
+}
+
+.bg-yellow {
+  background-color: $yellow;
+}
+
+
+.color-orange {
+  color: lighten($orange, 20%);
+}
+
+.bg-orange {
+  background-color: $orange;
+}
+
+.bg--textured {
+  background-image: url(../img/bg--textured.png);
+}
+
+.img-thumbnail {
+  background-color: $white;
+  border-radius: 0;
+  border: none;
+  box-shadow: 0 0 1px $yellow-light, 0 0 5px $yellow, 0 0 10px $yellow-light, 0 0 20px $yellow;
+  padding:1px;
+}
+
+.box-shadow--green {
+  @include box-shadow($green);
+}
+
+.box-shadow--pink {
+  @include box-shadow($pink);
+}
+
+.box-shadow--orange {
+  @include box-shadow($orange);
+}
+
+.box-shadow--yellow {
+  @include box-shadow($yellow);
+}

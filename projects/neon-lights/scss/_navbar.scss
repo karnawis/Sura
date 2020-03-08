@@ -1,0 +1,82 @@
+// Styling for the navbar
+#mainNav {
+    border-color: fade-out($gray-darker, .95);
+    background-color: $yellow;
+    @include transition-all;
+    @include heading-font;
+    .navbar-brand {
+        color: $black-light;
+        font-family: 'Teko', sans-serif !important;
+        @include heading-font;
+        text-shadow: 0px 0px 150px $white;
+        &:hover,
+        &:focus {
+            color: lighten($black-light, 10%);
+        }
+    }
+    .navbar-toggler {
+        font-size: 20px;
+        padding: 8px 10px;
+        color: $black-light;
+        border: none;
+    }
+    .navbar-nav {
+        > li {
+            > a {
+                font-size: 11px;
+                @include alt-font;
+                &.active {
+                    color:  $black-light;
+                    background-color: transparent;
+                    font-weight: 800;
+                    &:hover {
+                        background-color: transparent;
+                    }
+                }
+            }
+            > a,
+            > a:focus {
+                color: lighten($black, 50%);
+                &:hover {
+                    color: lighten($black, 50%);
+                }
+            }
+        }
+    }
+    @media (min-width: 992px) {
+        border-color: $black-light;
+        background-color: $black;
+        .navbar-brand {
+            color: $yellow;
+            &:hover,
+            &:focus {
+                color: $yellow;
+            }
+        }
+        .navbar-nav > li > a,
+        .navbar-nav > li > a:focus {
+            color: fade-out($yellow, .3);
+            &:hover {
+                color: $yellow;
+            }
+        }
+        &.navbar-shrink {
+            border-color: fade-out($gray-darker, .9);
+            background-color: $black-light;
+            .navbar-brand {
+                color: $yellow;
+                &:hover,
+                &:focus {
+                    color: lighten($yellow, 50%);
+                }
+            }
+            .navbar-nav > li > a,
+            .navbar-nav > li > a:focus {
+                color: $yellow;
+                &:hover {
+                    color: $yellow;
+                }
+            }
+        }
+    }
+}

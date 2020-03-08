@@ -1,0 +1,115 @@
+// Styling for the masthead
+header.masthead {
+    position: relative;
+    text-align: center !important;
+    width: 100%;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    color: white;
+    position: relative;
+    background-color: $black;
+    background-position: center top;
+    background-repeat: no-repeat;
+    .header-content {
+        margin-bottom: 60px;
+        padding-top: 80px;
+
+        h1, h2, span {
+            font-size: 50px;
+            letter-spacing:9px;
+            text-align: center;
+            text-shadow:0px 0px 50px $blue;
+
+            &.color-yellow{
+                text-shadow:0px 0px 1px $white,
+                            0px 0px 20px $black,
+                            0px 0px 30px $yellow,
+                            0px 0px 40px $yellow,
+                            0px 0px 200px $yellow;
+            }
+            &.color-pink {
+                text-shadow:0px 0px 1px  $white,
+                            0px 0px 20px $black,
+                            0px 0px 30px $pink,
+                            0px 0px 40px $pink,
+                            0px 0px 50px $pink;
+            }
+            &.color-green {
+                text-shadow:0px 0px 1px  $white,
+                            0px 0px 20px $black,
+                            0px 0px 30px $green,
+                            0px 0px 40px $green,
+                            0px 0px 50px $green;
+            }
+            &.color-orange {
+                text-shadow:0px 0px 1px  $white,
+                0px 0px 20px $black,
+                0px 0px 30px $orange,
+                0px 0px 40px $orange,
+                0px 0px 50px $orange;
+            }
+            &.color-yellow {
+                @include text-shadow($yellow)
+            }
+            &.color-orange {
+                @include text-shadow($orange);
+            }
+            &.color-green {
+                @include text-shadow($green);
+            }
+            &.color-pink {
+                @include text-shadow($pink);
+            }
+        }
+        h1 p{ display: inline-block;}
+        h2 { font-size: 40px;   }
+
+    }
+    .device-container {
+        max-width: 325px;
+        margin-right: auto;
+        margin-left: auto;
+        .screen img {
+            border-radius: 3px;
+        }
+    }
+    @media (min-width: 992px) {
+        min-height: 300px;
+        padding-top: 0;
+        padding-bottom: 0;
+        .header-content {
+            margin-bottom: 0;
+            h1 {
+                font-size: 50px;
+            }
+        }
+        .device-container {
+            max-width: 325px;
+        }
+    }
+}
+
+//animation
+//https://www.votendna.org.uk/
+#light-bulb-container {
+    height: 300px;
+    position: absolute;
+    top: 100px;
+    width: 100%;
+}
+
+#light-bulb {
+    background: url(../img/light-bulb.png) no-repeat scroll 0 0 transparent;
+    background-size: contain;
+    display: block;
+    height: 118px;
+    right: 3%;
+    top: 100px;
+    position: absolute;
+    width: 102px;
+    z-index: 300;
+    -webkit-animation: revOrbit 3s linear infinite;
+    -moz-animation: revOrbit 3s linear infinite;
+    -o-animation: revOrbit 3s linear infinite;
+    animation: revOrbit 3s linear infinite;
+}
