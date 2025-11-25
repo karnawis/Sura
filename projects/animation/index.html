@@ -1,1078 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Painting Animation Documentation</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Sura Karnawi 2025" />
+    <meta
+      name="description"
+      content="Sura Karnawi is an entrepreneur, artist, software engineer and a mother"
+    />
+    <meta name="robot" content="index, follow, all" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://codepen.io https://cpwebassets.codepen.io;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://codepen.io https://cpwebassets.codepen.io;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      frame-src https://codepen.io;
+      connect-src 'self' https://codepen.io;
+      "
+    />
+    <title>Sura Karnawi | Painting Animation Examples</title>
+    <link rel="shortcut icon" href="../../assets/img/favicon.ico" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../../assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css"
+    />
+    <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Cookie"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Indie+Flower"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/styles.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../../assets/plugin/colorbox/colorbox.css"
+    />
     <style>
-      * {
+      body {
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
-      }
-
-      :root {
-        --primary-color: #2c3e50;
-        --secondary-color: #e74c3c;
-        --accent-color: #3498db;
-        --bg-color: #f8f9fa;
-        --text-color: #333;
-        --border-color: #dee2e6;
-        --code-bg: #f4f4f4;
-        --quote-bg: #fff8e1;
-        --callout-tip: #e3f2fd;
-        --callout-warning: #fff3e0;
-        --callout-important: #fce4ec;
-      }
-
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        line-height: 1.7;
-        color: var(--text-color);
-        background-color: var(--bg-color);
-      }
-
-      /* Header */
-      header {
-        background: linear-gradient(
-          135deg,
-          var(--primary-color) 0%,
-          #34495e 100%
-        );
-        color: white;
-        padding: 3rem 2rem;
-        text-align: center;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      header h1 {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-        font-weight: 700;
-      }
-
-      header .subtitle {
-        font-size: 1.2rem;
-        opacity: 0.9;
-        font-weight: 300;
-      }
-
-      header .metadata {
-        margin-top: 1rem;
-        font-size: 0.9rem;
-        opacity: 0.8;
-      }
-
-      /* Navigation */
-      nav {
-        position: sticky;
-        top: 0;
-        background: white;
-        border-bottom: 1px solid var(--border-color);
-        padding: 1rem 2rem;
-        z-index: 100;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-      }
-
-      nav ul {
-        list-style: none;
+        width: 100%;
+        height: 100%;
+        min-height: 100vh;
+        background: #f0f0f0;
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1.5rem;
+        flex-direction: column;
+      }
+
+      #page-top {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #video-game {
+        flex: 1;
+        padding-top: 80px; /* Account for fixed navbar */
+      }
+
+      #container {
+        width: 100%;
         max-width: 1200px;
         margin: 0 auto;
+        padding: 20px;
       }
 
-      nav a {
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s;
-        padding: 0.5rem 0;
-        border-bottom: 2px solid transparent;
+      .iframe-container {
+        margin-bottom: 40px;
       }
 
-      nav a:hover {
-        color: var(--accent-color);
-        border-bottom-color: var(--accent-color);
+      .iframe-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
       }
 
-      /* Main Content */
-      main {
-        max-width: 900px;
-        margin: 3rem auto;
-        padding: 0 2rem 4rem;
-      }
-
-      section {
-        background: white;
-        padding: 3rem;
-        margin-bottom: 3rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      }
-
-      section > h2 {
-        color: var(--primary-color);
-        font-size: 2rem;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 3px solid var(--secondary-color);
-      }
-
-      .subsection {
-        margin-bottom: 2.5rem;
-      }
-
-      .subsection:last-child {
-        margin-bottom: 0;
-      }
-
-      .subsection h3 {
-        color: var(--primary-color);
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        margin-top: 2rem;
-      }
-
-      .subsection h3:first-child {
-        margin-top: 0;
-      }
-
-      .subsection h4 {
-        color: var(--accent-color);
-        font-size: 1.2rem;
-        margin: 1.5rem 0 0.8rem;
-      }
-
-      .subsection h5 {
-        color: var(--text-color);
-        font-size: 1.1rem;
-        margin: 1.2rem 0 0.6rem;
-        font-weight: 600;
-      }
-
-      .subtitle-text {
-        font-style: italic;
-        color: #666;
-        margin-bottom: 1rem;
-        display: block;
-      }
-
-      /* Paragraphs */
-      p {
-        margin-bottom: 1rem;
-        text-align: justify;
-      }
-
-      /* Lists */
-      ul,
-      ol {
-        margin: 1rem 0 1rem 2rem;
-      }
-
-      li {
-        margin-bottom: 0.5rem;
-      }
-
-      li strong {
-        color: var(--primary-color);
-      }
-
-      /* Tables */
-      table {
+      .iframe-container iframe {
+        border: 0;
         width: 100%;
-        border-collapse: collapse;
-        margin: 1.5rem 0;
-        overflow-x: auto;
-        display: block;
-      }
-
-      table thead {
-        background-color: var(--primary-color);
-        color: white;
-      }
-
-      table th,
-      table td {
-        padding: 1rem;
-        text-align: left;
-        border: 1px solid var(--border-color);
-      }
-
-      table tbody tr:nth-child(even) {
-        background-color: #f8f9fa;
-      }
-
-      /* Quotes */
-      blockquote {
-        background: var(--quote-bg);
-        border-left: 4px solid #fbc02d;
-        padding: 1.5rem;
-        margin: 1.5rem 0;
-        font-style: italic;
-        position: relative;
-      }
-
-      blockquote::before {
-        content: '"';
-        font-size: 4rem;
-        position: absolute;
-        left: 10px;
-        top: -10px;
-        color: #fbc02d;
-        opacity: 0.3;
-      }
-
-      blockquote p {
-        margin: 0;
-        position: relative;
-        z-index: 1;
-      }
-
-      blockquote .author {
-        display: block;
-        text-align: right;
-        margin-top: 0.5rem;
-        font-weight: 600;
-        color: var(--primary-color);
-      }
-
-      blockquote .author::before {
-        content: "— ";
-      }
-
-      /* Callouts */
-      .callout {
-        padding: 1.5rem;
-        margin: 1.5rem 0;
-        border-radius: 5px;
-        border-left: 4px solid;
-      }
-
-      .callout-tip {
-        background-color: var(--callout-tip);
-        border-left-color: var(--accent-color);
-      }
-
-      .callout-warning {
-        background-color: var(--callout-warning);
-        border-left-color: #ff9800;
-      }
-
-      .callout-important {
-        background-color: var(--callout-important);
-        border-left-color: var(--secondary-color);
-      }
-
-      .callout-recommendation {
-        background-color: #e8f5e9;
-        border-left-color: #4caf50;
-      }
-
-      .callout-philosophy {
-        background-color: #f3e5f5;
-        border-left-color: #9c27b0;
-      }
-
-      .callout-encouragement {
-        background-color: #fff9c4;
-        border-left-color: #fbc02d;
-      }
-
-      .callout-title {
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        color: var(--primary-color);
-      }
-
-      /* Interview sections */
-      .interview-section {
-        margin: 2rem 0;
-        padding: 1.5rem;
-        background: #f8f9fa;
-        border-radius: 5px;
-      }
-
-      .interview-section h4 {
-        color: var(--secondary-color);
-        margin-bottom: 1rem;
-      }
-
-      .interview-quote {
-        margin: 1rem 0;
-      }
-
-      .interview-context {
-        color: #666;
-        font-size: 0.95rem;
-        margin-top: 0.5rem;
-      }
-
-      /* Projects */
-      .project {
-        margin: 2rem 0;
-        padding: 1.5rem;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        border-radius: 8px;
-      }
-
-      .project-name {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: var(--primary-color);
-        margin-bottom: 0.5rem;
-      }
-
-      .project-description {
-        margin-bottom: 1rem;
-      }
-
-      .project-features {
-        margin: 1rem 0;
-      }
-
-      .project-insight {
-        margin-top: 1rem;
-        font-style: italic;
-        color: #555;
-        padding-left: 1rem;
-        border-left: 3px solid var(--accent-color);
-      }
-
-      /* Challenge-Solution */
-      .challenge-solution-item {
-        margin: 1.5rem 0;
-        padding: 1rem;
-        background: #f8f9fa;
-        border-radius: 5px;
-      }
-
-      .challenge {
-        font-weight: 600;
-        color: var(--secondary-color);
-        margin-bottom: 0.5rem;
-      }
-
-      .solution {
-        color: #2e7d32;
-        margin-left: 1rem;
-      }
-
-      /* Resources */
-      .artist-item,
-      .resource-item {
-        margin: 1.5rem 0;
-        padding: 1rem;
-        background: #f8f9fa;
-        border-left: 3px solid var(--accent-color);
-      }
-
-      .artist-name,
-      .resource-name {
-        font-weight: 700;
-        color: var(--primary-color);
-        margin-bottom: 0.3rem;
-      }
-
-      .artist-description,
-      .resource-description {
-        color: #666;
-        margin-bottom: 0.5rem;
-      }
-
-      .work-item {
-        margin: 0.5rem 0 0.5rem 1rem;
-      }
-
-      .work-title {
-        font-weight: 600;
-      }
-
-      /* Links */
-      a {
-        color: var(--accent-color);
-        text-decoration: none;
-        border-bottom: 1px solid transparent;
-        transition: all 0.3s;
-      }
-
-      a:hover {
-        border-bottom-color: var(--accent-color);
-      }
-
-      /* CTA */
-      .cta {
-        background: linear-gradient(
-          135deg,
-          var(--secondary-color) 0%,
-          #c0392b 100%
-        );
-        color: white;
-        padding: 2rem;
-        border-radius: 8px;
-        text-align: center;
-        margin: 2rem 0;
-      }
-
-      .cta h4 {
-        color: white;
-        margin-bottom: 1rem;
-      }
-
-      .cta a {
-        color: white;
-        font-weight: 700;
-        font-size: 1.2rem;
-        border-bottom: 2px solid white;
-      }
-
-      /* Signature */
-      .signature {
-        text-align: right;
-        font-style: italic;
-        margin-top: 2rem;
-        color: #666;
-      }
-
-      /* Footer */
-      footer {
-        background: var(--primary-color);
-        color: white;
-        padding: 2rem;
-        text-align: center;
-      }
-
-      footer a {
-        color: white;
-        margin: 0 1rem;
-      }
-
-      /* Loading */
-      .loading {
-        text-align: center;
-        padding: 4rem;
-        font-size: 1.2rem;
-        color: #666;
-      }
-
-      /* Responsive */
-      @media (max-width: 768px) {
-        header h1 {
-          font-size: 1.8rem;
-        }
-
-        nav ul {
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        section {
-          padding: 1.5rem;
-        }
-
-        main {
-          padding: 0 1rem 2rem;
-        }
-
-        table {
-          font-size: 0.9rem;
-        }
-
-        table th,
-        table td {
-          padding: 0.5rem;
-        }
-      }
-
-      /* Smooth scroll */
-      html {
-        scroll-behavior: smooth;
-      }
-
-      /* Back to top button */
-      #backToTop {
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        background: var(--accent-color);
-        color: white;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: none;
-        cursor: pointer;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s;
-      }
-
-      #backToTop:hover {
-        background: var(--primary-color);
-        transform: translateY(-3px);
-      }
-
-      #backToTop.show {
-        display: flex;
+        height: 600px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
     </style>
   </head>
-  <body>
-    <div class="loading" id="loading">Loading documentation...</div>
+  <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button
+            type="button"
+            class="navbar-toggle"
+            data-toggle="collapse"
+            data-target="#bs-example-navbar-collapse-1"
+            role="navigation"
+          >
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><h1>Painting animation</h1></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="hidden">
+              <a class="page-scroll" href="#page-top"></a>
+            </li>
+            <li>
+              <a class="page-scroll" href="#">guides</a>
+            </li>
+            <li>
+              <a class="page-scroll" href="#">link</a>
+            </li>
+            <li>
+              <a class="page-scroll" href="#">link</a>
+            </li>
+            <li>
+              <a href="#"></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <section id="home" class="jumbotron bg-color-red">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-8">
+            <p style="font-size: 50px">
+              <strong>Painting animation</strong>
+            </p>
+            <h1 class="color-white">
+              <strong>Practical tips by Sura</strong>
+            </h1>
+          </div>
+          <div class="col-xs-4">
+            <p>text</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="animation-interactivective" class="space-top">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h1>Interactive Painting Animation Examples</h1>
+            <p class="lead">
+              Explore interactive painting animation techniques
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div id="container">
+            <div class="iframe-container">
+              <h2>Interactive Layers Example</h2>
+              <iframe
+                id="iframe-1"
+                src="https://codepen.io/Surakittie/embed/VYaybWm?height=600&amp;theme-id=dark&amp;default-tab=result"
+                scrolling="no"
+                allowfullscreen=""
+                name="CodePen Embed - Painting Animation Layers"
+                title="Interactive Painting Animation Layers Demo"
+                class="cp_embed_iframe"
+                loading="lazy"
+                allowtransparency="true"
+              >
+                CodePen Embed Fallback
+              </iframe>
+            </div>
 
-    <div id="content" style="display: none">
-      <header id="top">
-        <h1 id="mainTitle"></h1>
-        <div class="subtitle" id="mainSubtitle"></div>
-        <div class="metadata" id="metadata"></div>
-      </header>
+            <div class="iframe-container">
+              <h2>3D Animation Example</h2>
+              <iframe
+                id="iframe-2"
+                src="https://codepen.io/Surakittie/embed/YPqYBPw?height=600&amp;theme-id=dark&amp;default-tab=result"
+                scrolling="no"
+                allowfullscreen=""
+                name="CodePen Embed - Painting Animation Layers 3d"
+                title="animation-interactive"
+                loading="lazy"
+                allowtransparency="true"
+              >
+                CodePen Embed Fallback
+              </iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-8">
+            My Journey into Painting Animation My exploration of painting
+            animation began during the creation of Unleaving, a video game (
+            supported by Telefilm Canada since 2021). Over the course of that
+            project, I created thousands of paintings and conducted more than
+            22,000 scans to animate landscapes and background scenes. Yet 90% of
+            those paintings never made it into the final production, they were
+            part of an extensive research process that led me to discover
+            something profound. When I started experimenting with glass and
+            capturing a floating leaf trail against a blank background,
+            extracting frames and seamlessly integrating them into the game to
+            create breathing shapes and sequences, I realized I had stumbled
+            upon a medium that felt like magic!! I fell in love with it.
+          </div>
+          <div class="col-xs-4">
+            <img
+              class="img-id-rounded"
+              src="../../assets/img/sura-karnawi-sitting-in-a-cafe-in-bath-face.jpg"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="banner-main-footer">
+      <div class="container">
+        <div class="row justify-content-start">
+          <div class="col col-12 align-self-center">
+            <ul>
+              <li>
+                <a href="http://ca.linkedin.com/in/surait/" target="_blank"
+                  ><i class="fa fa-linkedin" aria-hidden="true"></i
+                ></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row top-space">
+          <div class="col-md-12 center-text text-center">
+            <p class="lead">
+              Copyright &copy; <span id="year"></span> Sura Karnawi
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
 
-      <nav id="navigation">
-        <ul id="navList"></ul>
-      </nav>
-
-      <main id="main"></main>
-
-      <footer id="footer"></footer>
-    </div>
-
-    <button id="backToTop" title="Back to top">↑</button>
-
+    <script src="../../assets/js/jquery.js"></script>
+    <script src="../../assets/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/jquery.easing.min.js"></script>
+    <script src="../../assets/js/scrolling-nav.js"></script>
     <script>
-      // This function will be called after content.js loads
-      function loadContent(data) {
-        try {
-          renderHeader(data.metadata);
-          renderNavigation(data.navigation);
-          renderSections(data.sections);
-          renderFooter(data.footer);
-
-          document.getElementById("loading").style.display = "none";
-          document.getElementById("content").style.display = "block";
-
-          setupBackToTop();
-        } catch (error) {
-          console.error("Error loading content:", error);
-          document.getElementById("loading").innerHTML =
-            "Error loading documentation. Please check the console for details.";
+      document.getElementById("year").innerHTML = new Date().getFullYear();
+      $(window).scroll(function () {
+        if ($(".navbar").offset().top > 50) {
+          $(".navbar-fixed-top").addClass("top-nav-collapse");
+        } else {
+          $(".navbar-fixed-top").removeClass("top-nav-collapse");
         }
-      }
-
-      function renderHeader(metadata) {
-        document.title = metadata.title;
-        document.getElementById("mainTitle").textContent = metadata.title;
-        document.getElementById("mainSubtitle").textContent = metadata.subtitle;
-        document.getElementById("metadata").innerHTML = `
-                ${metadata.author} | ${metadata.location} | ${metadata.year}<br>
-                <a href="https://${metadata.website}" style="color: white;">${metadata.website}</a>
-            `;
-      }
-
-      function renderNavigation(navigation) {
-        const navList = document.getElementById("navList");
-        navigation
-          .sort((a, b) => a.order - b.order)
-          .forEach((item) => {
-            const li = document.createElement("li");
-            const a = document.createElement("a");
-            a.href = `#${item.id}`;
-            a.textContent = item.title;
-            li.appendChild(a);
-            navList.appendChild(li);
-          });
-      }
-
-      function renderSections(sections) {
-        const main = document.getElementById("main");
-        sections
-          .sort((a, b) => a.order - b.order)
-          .forEach((section) => {
-            const sectionEl = document.createElement("section");
-            sectionEl.id = section.id;
-
-            const h2 = document.createElement("h2");
-            h2.textContent = section.title;
-            sectionEl.appendChild(h2);
-
-            section.subsections.forEach((subsection) => {
-              const subsectionEl = document.createElement("div");
-              subsectionEl.className = "subsection";
-
-              const h3 = document.createElement("h3");
-              h3.textContent = subsection.title;
-              subsectionEl.appendChild(h3);
-
-              if (subsection.subtitle) {
-                const subtitle = document.createElement("span");
-                subtitle.className = "subtitle-text";
-                subtitle.textContent = subsection.subtitle;
-                subsectionEl.appendChild(subtitle);
-              }
-
-              renderContent(subsectionEl, subsection.content);
-              sectionEl.appendChild(subsectionEl);
-            });
-
-            main.appendChild(sectionEl);
-          });
-      }
-
-      function renderContent(parent, content) {
-        if (!content) return;
-
-        content.forEach((item) => {
-          switch (item.type) {
-            case "paragraph":
-              const p = document.createElement("p");
-              p.textContent = item.text;
-              if (item.style === "italic") p.style.fontStyle = "italic";
-              parent.appendChild(p);
-              break;
-
-            case "heading":
-              const h = document.createElement(`h${item.level}`);
-              h.textContent = item.text;
-              parent.appendChild(h);
-              break;
-
-            case "list":
-              const list = document.createElement(
-                item.listType === "ordered" ? "ol" : "ul"
-              );
-              item.items.forEach((listItem) => {
-                const li = document.createElement("li");
-                if (typeof listItem === "string") {
-                  li.innerHTML = listItem;
-                } else if (listItem.title) {
-                  li.innerHTML = `<strong>${listItem.title}</strong>: ${
-                    listItem.description || ""
-                  }`;
-                  if (listItem.examples) {
-                    const exList = document.createElement("ul");
-                    listItem.examples.forEach((ex) => {
-                      const exLi = document.createElement("li");
-                      exLi.textContent = ex;
-                      exList.appendChild(exLi);
-                    });
-                    li.appendChild(exList);
-                  }
-                  if (listItem.result) {
-                    const result = document.createElement("p");
-                    result.textContent = listItem.result;
-                    result.style.marginTop = "0.5rem";
-                    li.appendChild(result);
-                  }
-                }
-                list.appendChild(li);
-              });
-              parent.appendChild(list);
-              break;
-
-            case "table":
-              const table = document.createElement("table");
-              const thead = document.createElement("thead");
-              const headerRow = document.createElement("tr");
-              item.headers.forEach((header) => {
-                const th = document.createElement("th");
-                th.textContent = header;
-                headerRow.appendChild(th);
-              });
-              thead.appendChild(headerRow);
-              table.appendChild(thead);
-
-              const tbody = document.createElement("tbody");
-              item.rows.forEach((row) => {
-                const tr = document.createElement("tr");
-                Object.values(row).forEach((cell) => {
-                  const td = document.createElement("td");
-                  td.textContent = cell;
-                  tr.appendChild(td);
-                });
-                tbody.appendChild(tr);
-              });
-              table.appendChild(tbody);
-              parent.appendChild(table);
-              break;
-
-            case "quote":
-              const blockquote = document.createElement("blockquote");
-              const quoteP = document.createElement("p");
-              quoteP.textContent = item.text;
-              blockquote.appendChild(quoteP);
-              if (item.author) {
-                const author = document.createElement("span");
-                author.className = "author";
-                author.textContent = item.author;
-                blockquote.appendChild(author);
-              }
-              parent.appendChild(blockquote);
-              break;
-
-            case "callout":
-              const callout = document.createElement("div");
-              callout.className = `callout callout-${
-                item.calloutType || "tip"
-              }`;
-              if (item.title) {
-                const title = document.createElement("div");
-                title.className = "callout-title";
-                title.textContent = item.title;
-                callout.appendChild(title);
-              }
-              const calloutText = document.createElement("p");
-              calloutText.textContent = item.text;
-              callout.appendChild(calloutText);
-              parent.appendChild(callout);
-              break;
-
-            case "interview-section":
-              const intSection = document.createElement("div");
-              intSection.className = "interview-section";
-              const intTitle = document.createElement("h4");
-              intTitle.textContent = item.topic;
-              intSection.appendChild(intTitle);
-
-              if (item.quotes) {
-                item.quotes.forEach((q) => {
-                  const intQuote = document.createElement("div");
-                  intQuote.className = "interview-quote";
-                  const quoteBlock = document.createElement("blockquote");
-                  const qText = document.createElement("p");
-                  qText.textContent = q.text;
-                  quoteBlock.appendChild(qText);
-                  intQuote.appendChild(quoteBlock);
-
-                  if (q.context) {
-                    const context = document.createElement("p");
-                    context.className = "interview-context";
-                    context.textContent = q.context;
-                    intQuote.appendChild(context);
-                  }
-                  intSection.appendChild(intQuote);
-                });
-              }
-
-              if (item.content) {
-                renderContent(intSection, item.content);
-              }
-
-              parent.appendChild(intSection);
-              break;
-
-            case "project":
-              const project = document.createElement("div");
-              project.className = "project";
-
-              const projName = document.createElement("div");
-              projName.className = "project-name";
-              projName.textContent = item.name;
-              project.appendChild(projName);
-
-              const projDesc = document.createElement("p");
-              projDesc.className = "project-description";
-              projDesc.textContent = item.description;
-              project.appendChild(projDesc);
-
-              if (item.features) {
-                const features = document.createElement("ul");
-                features.className = "project-features";
-                item.features.forEach((f) => {
-                  const li = document.createElement("li");
-                  li.textContent = f;
-                  features.appendChild(li);
-                });
-                project.appendChild(features);
-              }
-
-              if (item.insight) {
-                const insight = document.createElement("p");
-                insight.className = "project-insight";
-                insight.textContent = item.insight;
-                project.appendChild(insight);
-              }
-
-              parent.appendChild(project);
-              break;
-
-            case "challenge-solution":
-              item.items.forEach((cs) => {
-                const csDiv = document.createElement("div");
-                csDiv.className = "challenge-solution-item";
-
-                const challenge = document.createElement("div");
-                challenge.className = "challenge";
-                challenge.textContent = `Challenge: ${cs.challenge}`;
-                csDiv.appendChild(challenge);
-
-                const solution = document.createElement("div");
-                solution.className = "solution";
-                solution.textContent = `Solution: ${cs.solution}`;
-                csDiv.appendChild(solution);
-
-                parent.appendChild(csDiv);
-              });
-              break;
-
-            case "artist-list":
-              item.artists.forEach((artist) => {
-                const artistDiv = document.createElement("div");
-                artistDiv.className = "artist-item";
-
-                const name = document.createElement("div");
-                name.className = "artist-name";
-                name.textContent = artist.name;
-                artistDiv.appendChild(name);
-
-                if (artist.description) {
-                  const desc = document.createElement("div");
-                  desc.className = "artist-description";
-                  desc.textContent = artist.description;
-                  artistDiv.appendChild(desc);
-                }
-
-                if (artist.works) {
-                  artist.works.forEach((work) => {
-                    const workDiv = document.createElement("div");
-                    workDiv.className = "work-item";
-                    let workText = `• <span class="work-title">${work.title}</span>`;
-                    if (work.year) workText += ` (${work.year})`;
-                    if (work.note) workText += ` - ${work.note}`;
-                    if (work.url)
-                      workText += ` - <a href="${work.url}" target="_blank">Watch</a>`;
-                    workDiv.innerHTML = workText;
-                    artistDiv.appendChild(workDiv);
-                  });
-                }
-
-                if (artist.link) {
-                  const link = document.createElement("p");
-                  link.innerHTML = `<a href="${artist.link.url}" target="_blank">${artist.link.text}</a>`;
-                  artistDiv.appendChild(link);
-                }
-
-                if (artist.links) {
-                  artist.links.forEach((l) => {
-                    const link = document.createElement("p");
-                    link.innerHTML = `<a href="${l.url}" target="_blank">${l.text}</a>`;
-                    artistDiv.appendChild(link);
-                  });
-                }
-
-                parent.appendChild(artistDiv);
-              });
-              break;
-
-            case "resource-list":
-              item.resources.forEach((resource) => {
-                const resDiv = document.createElement("div");
-                resDiv.className = "resource-item";
-
-                const name = document.createElement("div");
-                name.className = "resource-name";
-                name.textContent = resource.name;
-                resDiv.appendChild(name);
-
-                if (resource.description) {
-                  const desc = document.createElement("div");
-                  desc.className = "resource-description";
-                  desc.textContent = resource.description;
-                  resDiv.appendChild(desc);
-                }
-
-                if (resource.url) {
-                  const link = document.createElement("p");
-                  link.innerHTML = `<a href="${resource.url}" target="_blank">Visit →</a>`;
-                  resDiv.appendChild(link);
-                }
-
-                if (resource.topics) {
-                  const topics = document.createElement("ul");
-                  resource.topics.forEach((t) => {
-                    const li = document.createElement("li");
-                    li.textContent = t;
-                    topics.appendChild(li);
-                  });
-                  resDiv.appendChild(topics);
-                }
-
-                if (resource.links) {
-                  resource.links.forEach((l) => {
-                    const link = document.createElement("p");
-                    link.innerHTML = `• <a href="${l.url}" target="_blank">${l.name}</a>`;
-                    resDiv.appendChild(link);
-                  });
-                }
-
-                parent.appendChild(resDiv);
-              });
-              break;
-
-            case "cta":
-              const cta = document.createElement("div");
-              cta.className = "cta";
-
-              const ctaTitle = document.createElement("h4");
-              ctaTitle.textContent = item.title;
-              cta.appendChild(ctaTitle);
-
-              const ctaLink = document.createElement("p");
-              ctaLink.innerHTML = `<a href="${item.url}" target="_blank">Visit ${item.url}</a>`;
-              cta.appendChild(ctaLink);
-
-              if (item.items) {
-                const ctaList = document.createElement("ul");
-                ctaList.style.color = "white";
-                ctaList.style.textAlign = "left";
-                item.items.forEach((i) => {
-                  const li = document.createElement("li");
-                  li.textContent = i;
-                  ctaList.appendChild(li);
-                });
-                cta.appendChild(ctaList);
-              }
-
-              parent.appendChild(cta);
-              break;
-
-            case "signature":
-              const sig = document.createElement("div");
-              sig.className = "signature";
-              sig.textContent = item.text;
-              parent.appendChild(sig);
-              break;
-
-            case "comparison":
-              item.items.forEach((comp) => {
-                const compDiv = document.createElement("div");
-                compDiv.style.marginBottom = "1.5rem";
-                compDiv.style.padding = "1rem";
-                compDiv.style.background = "#f8f9fa";
-                compDiv.style.borderRadius = "5px";
-
-                const title = document.createElement("h5");
-                title.textContent = comp.title;
-                compDiv.appendChild(title);
-
-                if (comp.pros) {
-                  const prosP = document.createElement("p");
-                  prosP.innerHTML =
-                    '<strong style="color: #2e7d32;">Pros:</strong>';
-                  compDiv.appendChild(prosP);
-                  const prosList = document.createElement("ul");
-                  comp.pros.forEach((pro) => {
-                    const li = document.createElement("li");
-                    li.textContent = pro;
-                    prosList.appendChild(li);
-                  });
-                  compDiv.appendChild(prosList);
-                }
-
-                if (comp.cons) {
-                  const consP = document.createElement("p");
-                  consP.innerHTML =
-                    '<strong style="color: #c62828;">Cons:</strong>';
-                  compDiv.appendChild(consP);
-                  const consList = document.createElement("ul");
-                  comp.cons.forEach((con) => {
-                    const li = document.createElement("li");
-                    li.textContent = con;
-                    consList.appendChild(li);
-                  });
-                  compDiv.appendChild(consList);
-                }
-
-                if (comp.solution) {
-                  const sol = document.createElement("p");
-                  sol.innerHTML = `<strong>Solution:</strong> ${comp.solution}`;
-                  sol.style.marginTop = "0.5rem";
-                  compDiv.appendChild(sol);
-                }
-
-                if (comp.note) {
-                  const note = document.createElement("p");
-                  note.innerHTML = `<em>${comp.note}</em>`;
-                  note.style.marginTop = "0.5rem";
-                  compDiv.appendChild(note);
-                }
-
-                parent.appendChild(compDiv);
-              });
-              break;
-
-            case "principle":
-              item.items.forEach((prin) => {
-                const prinDiv = document.createElement("div");
-                prinDiv.style.marginBottom = "1.5rem";
-
-                const title = document.createElement("h5");
-                title.textContent = prin.title;
-                prinDiv.appendChild(title);
-
-                if (prin.description) {
-                  const desc = document.createElement("p");
-                  desc.textContent = prin.description;
-                  prinDiv.appendChild(desc);
-                }
-
-                if (prin.examples) {
-                  const exList = document.createElement("ul");
-                  prin.examples.forEach((ex) => {
-                    const li = document.createElement("li");
-                    li.textContent = ex;
-                    exList.appendChild(li);
-                  });
-                  prinDiv.appendChild(exList);
-                }
-
-                if (prin.result) {
-                  const result = document.createElement("p");
-                  result.innerHTML = `<strong>Result:</strong> ${prin.result}`;
-                  result.style.marginTop = "0.5rem";
-                  prinDiv.appendChild(result);
-                }
-
-                parent.appendChild(prinDiv);
-              });
-              break;
-          }
-        });
-      }
-
-      function renderFooter(footer) {
-        const footerEl = document.getElementById("footer");
-        const links = footer.links
-          .map((link) => {
-            return `<a href="${link.href}">${link.text}</a>`;
-          })
-          .join("");
-        footerEl.innerHTML = `
-                <div>${links}</div>
-                <div style="margin-top: 1rem;">${footer.copyright}</div>
-            `;
-      }
-
-      function setupBackToTop() {
-        const button = document.getElementById("backToTop");
-
-        window.addEventListener("scroll", () => {
-          if (window.pageYOffset > 300) {
-            button.classList.add("show");
-          } else {
-            button.classList.remove("show");
-          }
-        });
-
-        button.addEventListener("click", () => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        });
-      }
+      });
     </script>
-
-    <!-- Load content data -->
-    <script src="scripts/content.json"></script>
   </body>
 </html>
