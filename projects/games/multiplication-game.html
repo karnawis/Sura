@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multiplication Adventure!</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0f0e2a;
+        --card: #1a1840;
+        --accent4: #ff6b6b;
+        --accent5: #ffd93d;
+        --accent6: #6bcb77;
+        --purple: #a78bfa;
+        --star: #ffd93d;
+        --text: #f0eaff;
+        --muted: #8b84c0;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Nunito", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        overflow-x: hidden;
+      }
+
+      /* Stars background */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          radial-gradient(1px 1px at 10% 20%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 30% 60%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 50% 10%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 70% 80%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 90% 40%, white 0%, transparent 100%),
+          radial-gradient(1.5px 1.5px at 20% 90%, white 0%, transparent 100%),
+          radial-gradient(1.5px 1.5px at 80% 15%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 45% 50%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 60% 30%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 85% 70%, white 0%, transparent 100%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .container {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 680px;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 24px;
+        animation: dropIn 0.6s ease;
+      }
+
+      header h1 {
+        font-family: "Fredoka One", cursive;
+        font-size: clamp(2rem, 6vw, 3rem);
+        background: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcb77);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.1;
+      }
+
+      header p {
+        color: var(--muted);
+        font-size: 1rem;
+        margin-top: 6px;
+      }
+
+      /* Score bar */
+      .scorebar {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .score-pill {
+        background: var(--card);
+        border: 2px solid #2e2b5e;
+        border-radius: 50px;
+        padding: 8px 20px;
+        font-weight: 800;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .score-pill .icon {
+        font-size: 1.3rem;
+      }
+      .score-pill .val {
+        font-size: 1.2rem;
+      }
+
+      /* Tab switcher */
+      .tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+        background: var(--card);
+        border-radius: 16px;
+        padding: 6px;
+        border: 2px solid #2e2b5e;
+      }
+
+      .tab {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 12px;
+        font-family: "Fredoka One", cursive;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: transparent;
+        color: var(--muted);
+      }
+
+      .tab.active-4 {
+        background: var(--accent4);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+      }
+      .tab.active-5 {
+        background: var(--accent5);
+        color: #333;
+        box-shadow: 0 4px 15px rgba(255, 217, 61, 0.4);
+      }
+      .tab.active-6 {
+        background: var(--accent6);
+        color: white;
+        box-shadow: 0 4px 15px rgba(107, 203, 119, 0.4);
+      }
+      .tab.active-all {
+        background: var(--purple);
+        color: white;
+        box-shadow: 0 4px 15px rgba(167, 139, 250, 0.4);
+      }
+
+      /* Modes */
+      .modes {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+
+      .mode-btn {
+        flex: 1;
+        padding: 8px;
+        border: 2px solid #2e2b5e;
+        border-radius: 12px;
+        background: var(--card);
+        color: var(--muted);
+        font-family: "Nunito", sans-serif;
+        font-weight: 800;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+      }
+
+      .mode-btn.active {
+        border-color: var(--purple);
+        color: var(--purple);
+        background: rgba(167, 139, 250, 0.1);
+      }
+
+      /* Question card */
+      .question-card {
+        background: var(--card);
+        border: 2px solid #2e2b5e;
+        border-radius: 24px;
+        padding: 30px 24px;
+        text-align: center;
+        margin-bottom: 20px;
+        animation: fadeUp 0.4s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .question-card::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        opacity: 0.06;
+      }
+
+      .question-card.theme-4::before {
+        background: var(--accent4);
+      }
+      .question-card.theme-5::before {
+        background: var(--accent5);
+      }
+      .question-card.theme-6::before {
+        background: var(--accent6);
+      }
+
+      .question-label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+
+      .question-text {
+        font-family: "Fredoka One", cursive;
+        font-size: clamp(2.5rem, 10vw, 4rem);
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+
+      .question-text.theme-4 {
+        color: var(--accent4);
+      }
+      .question-text.theme-5 {
+        color: var(--accent5);
+      }
+      .question-text.theme-6 {
+        color: var(--accent6);
+      }
+      .question-text.theme-all {
+        color: var(--purple);
+      }
+
+      .visual-aid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+        margin: 14px 0 6px;
+        min-height: 40px;
+        max-height: 100px;
+        overflow: hidden;
+      }
+
+      .dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        animation: popIn 0.2s ease backwards;
+      }
+
+      .dot-4 {
+        background: rgba(255, 107, 107, 0.3);
+        border: 2px solid var(--accent4);
+      }
+      .dot-5 {
+        background: rgba(255, 217, 61, 0.3);
+        border: 2px solid var(--accent5);
+      }
+      .dot-6 {
+        background: rgba(107, 203, 119, 0.3);
+        border: 2px solid var(--accent6);
+      }
+      .dot-all {
+        background: rgba(167, 139, 250, 0.3);
+        border: 2px solid var(--purple);
+      }
+
+      /* Answer choices */
+      .choices {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .choice-btn {
+        padding: 18px;
+        border-radius: 18px;
+        border: 3px solid #2e2b5e;
+        background: var(--card);
+        color: var(--text);
+        font-family: "Fredoka One", cursive;
+        font-size: 1.8rem;
+        cursor: pointer;
+        transition: all 0.15s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .choice-btn:hover:not(:disabled) {
+        border-color: var(--purple);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .choice-btn.correct {
+        background: var(--accent6) !important;
+        border-color: var(--accent6) !important;
+        color: white !important;
+        animation: bounce 0.4s ease;
+      }
+
+      .choice-btn.wrong {
+        background: var(--accent4) !important;
+        border-color: var(--accent4) !important;
+        color: white !important;
+        animation: shake 0.4s ease;
+      }
+
+      .choice-btn:disabled {
+        cursor: not-allowed;
+      }
+
+      /* Type answer mode */
+      .type-area {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .type-input {
+        flex: 1;
+        padding: 16px 20px;
+        font-family: "Fredoka One", cursive;
+        font-size: 2rem;
+        border-radius: 18px;
+        border: 3px solid #2e2b5e;
+        background: var(--card);
+        color: var(--text);
+        text-align: center;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      .type-input:focus {
+        border-color: var(--purple);
+      }
+      .type-input.correct {
+        border-color: var(--accent6);
+        background: rgba(107, 203, 119, 0.15);
+      }
+      .type-input.wrong {
+        border-color: var(--accent4);
+        background: rgba(255, 107, 107, 0.15);
+      }
+
+      .submit-btn {
+        padding: 16px 24px;
+        border-radius: 18px;
+        border: none;
+        background: var(--purple);
+        color: white;
+        font-family: "Fredoka One", cursive;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 15px rgba(167, 139, 250, 0.3);
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(167, 139, 250, 0.4);
+      }
+
+      /* Table view */
+      .table-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .table-card {
+        background: var(--card);
+        border: 2px solid #2e2b5e;
+        border-radius: 14px;
+        padding: 12px 10px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        cursor: default;
+      }
+
+      .table-card:hover {
+        transform: scale(1.04);
+        border-color: var(--purple);
+      }
+
+      .table-card .eq {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+      .table-card .result {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.5rem;
+      }
+      .table-card.t4 .result {
+        color: var(--accent4);
+      }
+      .table-card.t5 .result {
+        color: var(--accent5);
+      }
+      .table-card.t6 .result {
+        color: var(--accent6);
+      }
+
+      /* Feedback */
+      .feedback {
+        text-align: center;
+        font-family: "Fredoka One", cursive;
+        font-size: 1.5rem;
+        min-height: 40px;
+        margin-bottom: 16px;
+        animation: popIn 0.3s ease;
+      }
+
+      .feedback.good {
+        color: var(--accent6);
+      }
+      .feedback.bad {
+        color: var(--accent4);
+      }
+
+      /* Next btn */
+      .next-btn {
+        width: 100%;
+        padding: 16px;
+        border-radius: 18px;
+        border: none;
+        background: linear-gradient(135deg, #6bcb77, #4db6ac);
+        color: white;
+        font-family: "Fredoka One", cursive;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 15px rgba(107, 203, 119, 0.3);
+        margin-bottom: 16px;
+        display: none;
+      }
+
+      .next-btn.visible {
+        display: block;
+        animation: fadeUp 0.3s ease;
+      }
+      .next-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(107, 203, 119, 0.4);
+      }
+
+      /* Stars */
+      .stars-row {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin-bottom: 10px;
+        min-height: 32px;
+      }
+
+      .star {
+        font-size: 1.8rem;
+        animation: popIn 0.3s ease backwards;
+        filter: grayscale(1);
+        opacity: 0.3;
+      }
+      .star.earned {
+        filter: none;
+        opacity: 1;
+      }
+
+      /* Section header */
+      .section-head {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.3rem;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* Progress bar */
+      .progress-wrap {
+        background: #2e2b5e;
+        border-radius: 10px;
+        height: 10px;
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        border-radius: 10px;
+        background: linear-gradient(90deg, var(--purple), #6bcb77);
+        transition: width 0.5s ease;
+      }
+
+      /* Keyframes */
+      @keyframes dropIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes popIn {
+        from {
+          opacity: 0;
+          transform: scale(0.6);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        40% {
+          transform: scale(1.1);
+        }
+        70% {
+          transform: scale(0.95);
+        }
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20% {
+          transform: translateX(-6px);
+        }
+        40% {
+          transform: translateX(6px);
+        }
+        60% {
+          transform: translateX(-4px);
+        }
+        80% {
+          transform: translateX(4px);
+        }
+      }
+      @keyframes confetti {
+        0% {
+          transform: translateY(0) rotate(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-80px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>⭐ Multiplication Adventure!</h1>
+        <h1>Hello Noah, you're a super star ⭐</h1>
+        <p>Master the 4s, 5s and 6s times tables!</p>
+      </header>
+
+      <!-- Score bar -->
+      <div class="scorebar">
+        <div class="score-pill">
+          <span class="icon">⭐</span>Stars:
+          <span class="val" id="starCount">0</span>
+        </div>
+        <div class="score-pill">
+          <span class="icon">🔥</span>Streak:
+          <span class="val" id="streakCount">0</span>
+        </div>
+        <div class="score-pill">
+          <span class="icon">✅</span>Correct:
+          <span class="val" id="correctCount">0</span>
+        </div>
+      </div>
+
+      <!-- Stars row -->
+      <div class="stars-row" id="starsRow">
+        <span class="star" id="s1">⭐</span>
+        <span class="star" id="s2">⭐</span>
+        <span class="star" id="s3">⭐</span>
+        <span class="star" id="s4">⭐</span>
+        <span class="star" id="s5">⭐</span>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active-4" onclick="setTable(4)">× 4</button>
+        <button class="tab" onclick="setTable(5)">× 5</button>
+        <button class="tab" onclick="setTable(6)">× 6</button>
+        <button class="tab" onclick="setTable('all')">🎲 Mix</button>
+      </div>
+
+      <!-- Modes -->
+      <div class="modes">
+        <button class="mode-btn active" id="modeQuiz" onclick="setMode('quiz')">
+          🎯 Quiz
+        </button>
+        <button class="mode-btn" id="modeType" onclick="setMode('type')">
+          ⌨️ Type It
+        </button>
+        <button class="mode-btn" id="modeTable" onclick="setMode('table')">
+          📋 Chart
+        </button>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+      </div>
+
+      <!-- QUIZ MODE -->
+      <div id="quizMode">
+        <div class="question-card" id="questionCard">
+          <div class="question-label">What is...</div>
+          <div class="question-text" id="questionText">4 × 3 = ?</div>
+          <div class="visual-aid" id="visualAid"></div>
+        </div>
+
+        <div class="choices" id="choicesGrid"></div>
+
+        <div class="feedback" id="feedback"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+          Next Question ➜
+        </button>
+      </div>
+
+      <!-- TYPE MODE -->
+      <div id="typeMode" style="display: none">
+        <div class="question-card" id="qCardType">
+          <div class="question-label">Type the answer!</div>
+          <div class="question-text" id="questionTextType">4 × 3 = ?</div>
+          <div class="visual-aid" id="visualAidType"></div>
+        </div>
+        <div class="type-area">
+          <input
+            class="type-input"
+            id="typeInput"
+            type="number"
+            placeholder="?"
+            autocomplete="off"
+            min="0"
+            max="999"
+          />
+          <button class="submit-btn" onclick="checkType()">Go! 🚀</button>
+        </div>
+        <div class="feedback" id="feedbackType"></div>
+        <button class="next-btn" id="nextBtnType" onclick="nextQuestion()">
+          Next Question ➜
+        </button>
+      </div>
+
+      <!-- TABLE MODE -->
+      <div id="tableMode" style="display: none">
+        <div class="section-head">🔴 The 4 Times Table</div>
+        <div class="table-grid" id="table4"></div>
+        <div class="section-head" style="margin-top: 10px">
+          🟡 The 5 Times Table
+        </div>
+        <div class="table-grid" id="table5"></div>
+        <div class="section-head" style="margin-top: 10px">
+          🟢 The 6 Times Table
+        </div>
+        <div class="table-grid" id="table6"></div>
+      </div>
+    </div>
+
+    <script>
+      let currentTable = 4;
+      let currentMode = "quiz";
+      let currentQ = null;
+      let answered = false;
+      let streak = 0;
+      let stars = 0;
+      let correct = 0;
+      let questionCount = 0;
+
+      const praises = [
+        "Amazing! 🎉",
+        "Super! ✨",
+        "You got it! 🌟",
+        "Brilliant! 🚀",
+        "Awesome! 💥",
+        "Perfect! 🏆",
+        "Great job! 🎊",
+      ];
+      const tryAgain = [
+        "Almost! 💪",
+        "Try again! 🔄",
+        "Don't give up! 🌈",
+        "Keep going! 💡",
+        "So close! 🎯",
+      ];
+
+      function getThemeClass() {
+        if (currentTable === 4) return "theme-4";
+        if (currentTable === 5) return "theme-5";
+        if (currentTable === 6) return "theme-6";
+        return "theme-all";
+      }
+
+      function getDotClass() {
+        if (currentTable === 4) return "dot-4";
+        if (currentTable === 5) return "dot-5";
+        if (currentTable === 6) return "dot-6";
+        return "dot-all";
+      }
+
+      function setTable(t) {
+        currentTable = t;
+        document.querySelectorAll(".tab").forEach((tab, i) => {
+          tab.className = "tab";
+          if (i === 0 && t === 4) tab.className = "tab active-4";
+          if (i === 1 && t === 5) tab.className = "tab active-5";
+          if (i === 2 && t === 6) tab.className = "tab active-6";
+          if (i === 3 && t === "all") tab.className = "tab active-all";
+        });
+        nextQuestion();
+      }
+
+      function setMode(m) {
+        currentMode = m;
+        document
+          .querySelectorAll(".mode-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document
+          .getElementById("mode" + m.charAt(0).toUpperCase() + m.slice(1))
+          .classList.add("active");
+        document.getElementById("quizMode").style.display =
+          m === "quiz" ? "block" : "none";
+        document.getElementById("typeMode").style.display =
+          m === "type" ? "block" : "none";
+        document.getElementById("tableMode").style.display =
+          m === "table" ? "block" : "none";
+        document.getElementById("progressWrap").style.display =
+          m === "table" ? "none" : "block";
+        if (m === "table") buildTables();
+        else nextQuestion();
+      }
+
+      function generateQuestion() {
+        let table;
+        if (currentTable === "all") {
+          const opts = [4, 5, 6];
+          table = opts[Math.floor(Math.random() * opts.length)];
+        } else {
+          table = currentTable;
+        }
+        const multiplier = Math.floor(Math.random() * 10) + 1;
+        const answer = table * multiplier;
+        return { table, multiplier, answer };
+      }
+
+      function generateChoices(answer) {
+        const choices = new Set([answer]);
+        while (choices.size < 4) {
+          const delta = Math.floor(Math.random() * 20) - 10;
+          const wrong = Math.max(1, answer + delta);
+          if (wrong !== answer) choices.add(wrong);
+        }
+        return [...choices].sort(() => Math.random() - 0.5);
+      }
+
+      function buildVisualAid(table, multiplier, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+        const total = table * multiplier;
+        if (total > 60) return;
+        const dotClass =
+          currentTable === 4
+            ? "dot-4"
+            : currentTable === 5
+              ? "dot-5"
+              : currentTable === 6
+                ? "dot-6"
+                : "dot-all";
+        for (let i = 0; i < total; i++) {
+          const dot = document.createElement("div");
+          dot.className = `dot ${dotClass}`;
+          dot.style.animationDelay = i * 0.02 + "s";
+          container.appendChild(dot);
+        }
+      }
+
+      function nextQuestion() {
+        answered = false;
+        currentQ = generateQuestion();
+        questionCount++;
+        updateProgress();
+
+        if (currentMode === "quiz") {
+          const qText = document.getElementById("questionText");
+          const qCard = document.getElementById("questionCard");
+          qText.textContent = `${currentQ.table} × ${currentQ.multiplier} = ?`;
+          qText.className = `question-text ${getThemeClass()}`;
+          qCard.className = `question-card ${getThemeClass()}`;
+          buildVisualAid(currentQ.table, currentQ.multiplier, "visualAid");
+
+          const choices = generateChoices(currentQ.answer);
+          const grid = document.getElementById("choicesGrid");
+          grid.innerHTML = "";
+          choices.forEach((c) => {
+            const btn = document.createElement("button");
+            btn.className = "choice-btn";
+            btn.textContent = c;
+            btn.onclick = () => checkAnswer(c, btn);
+            grid.appendChild(btn);
+          });
+          document.getElementById("feedback").textContent = "";
+          document.getElementById("nextBtn").classList.remove("visible");
+        } else if (currentMode === "type") {
+          const qText = document.getElementById("questionTextType");
+          const qCard = document.getElementById("qCardType");
+          qText.textContent = `${currentQ.table} × ${currentQ.multiplier} = ?`;
+          qText.className = `question-text ${getThemeClass()}`;
+          qCard.className = `question-card ${getThemeClass()}`;
+          buildVisualAid(currentQ.table, currentQ.multiplier, "visualAidType");
+
+          const inp = document.getElementById("typeInput");
+          inp.value = "";
+          inp.className = "type-input";
+          inp.disabled = false;
+          inp.focus();
+          document.getElementById("feedbackType").textContent = "";
+          document.getElementById("nextBtnType").classList.remove("visible");
+        }
+      }
+
+      function checkAnswer(val, btn) {
+        if (answered) return;
+        answered = true;
+        const isCorrect = val === currentQ.answer;
+        document
+          .querySelectorAll(".choice-btn")
+          .forEach((b) => (b.disabled = true));
+
+        if (isCorrect) {
+          btn.classList.add("correct");
+          handleCorrect("feedback");
+        } else {
+          btn.classList.add("wrong");
+          document.querySelectorAll(".choice-btn").forEach((b) => {
+            if (parseInt(b.textContent) === currentQ.answer)
+              b.classList.add("correct");
+          });
+          handleWrong("feedback");
+        }
+        document.getElementById("nextBtn").classList.add("visible");
+      }
+
+      function checkType() {
+        if (answered) return;
+        const inp = document.getElementById("typeInput");
+        const val = parseInt(inp.value);
+        if (isNaN(val)) return;
+        answered = true;
+        inp.disabled = true;
+
+        if (val === currentQ.answer) {
+          inp.classList.add("correct");
+          handleCorrect("feedbackType");
+        } else {
+          inp.classList.add("wrong");
+          document.getElementById("feedbackType").innerHTML =
+            `<span style="color:var(--accent4)">Not quite! The answer is <span style="color:var(--accent6)">${currentQ.answer}</span> 💡</span>`;
+          handleWrong("feedbackType", true);
+        }
+        document.getElementById("nextBtnType").classList.add("visible");
+      }
+
+      document
+        .getElementById("typeInput")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") checkType();
+        });
+
+      function handleCorrect(fbId) {
+        streak++;
+        correct++;
+        document.getElementById("streakCount").textContent = streak;
+        document.getElementById("correctCount").textContent = correct;
+
+        if (streak % 3 === 0 && stars < 5) {
+          stars++;
+          document.getElementById("starCount").textContent = stars;
+          document.getElementById("s" + stars).classList.add("earned");
+        }
+
+        const msg = praises[Math.floor(Math.random() * praises.length)];
+        if (fbId !== "feedbackType")
+          document.getElementById(fbId).innerHTML =
+            `<span class="good">${msg}</span>`;
+        else
+          document.getElementById(fbId).innerHTML =
+            `<span class="good">${msg}</span>`;
+      }
+
+      function handleWrong(fbId, skipMsg = false) {
+        streak = 0;
+        document.getElementById("streakCount").textContent = streak;
+        if (!skipMsg) {
+          const msg = tryAgain[Math.floor(Math.random() * tryAgain.length)];
+          document.getElementById(fbId).innerHTML =
+            `<span class="bad">${msg} Answer: <strong style="color:var(--accent6)">${currentQ.answer}</strong></span>`;
+        }
+      }
+
+      function updateProgress() {
+        const p = Math.min((correct / Math.max(questionCount, 1)) * 100, 100);
+        document.getElementById("progressBar").style.width = p + "%";
+      }
+
+      function buildTables() {
+        [4, 5, 6].forEach((t) => {
+          const container = document.getElementById("table" + t);
+          container.innerHTML = "";
+          for (let i = 1; i <= 10; i++) {
+            const card = document.createElement("div");
+            card.className = `table-card t${t}`;
+            card.innerHTML = `<div class="eq">${t} × ${i} =</div><div class="result">${t * i}</div>`;
+            container.appendChild(card);
+          }
+        });
+      }
+
+      // Init
+      nextQuestion();
+    </script>
+  </body>
+</html>
