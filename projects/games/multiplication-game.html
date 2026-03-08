@@ -116,49 +116,97 @@
         font-size: 1.2rem;
       }
 
-      /* Tab switcher */
-      .tabs {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 20px;
+      /* Multiplier selector */
+      .multiplier-section {
         background: var(--card);
-        border-radius: 16px;
-        padding: 6px;
         border: 2px solid #2e2b5e;
+        border-radius: 20px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
       }
 
-      .tab {
-        flex: 1;
-        padding: 10px;
-        border: none;
-        border-radius: 12px;
-        font-family: "Fredoka One", cursive;
-        font-size: 1.1rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        background: transparent;
+      .multiplier-label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
         color: var(--muted);
+        margin-bottom: 10px;
+        text-align: center;
       }
 
-      .tab.active-4 {
-        background: var(--accent4);
-        color: white;
-        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+      .multiplier-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        justify-content: center;
       }
-      .tab.active-5 {
-        background: var(--accent5);
-        color: #333;
-        box-shadow: 0 4px 15px rgba(255, 217, 61, 0.4);
+
+      .multiplier-icon {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.4rem;
+        color: var(--purple);
       }
-      .tab.active-6 {
-        background: var(--accent6);
-        color: white;
-        box-shadow: 0 4px 15px rgba(107, 203, 119, 0.4);
+
+      .multiplier-select {
+        appearance: none;
+        -webkit-appearance: none;
+        background: var(--bg);
+        border: 3px solid var(--purple);
+        border-radius: 14px;
+        color: var(--text);
+        font-family: "Fredoka One", cursive;
+        font-size: 2rem;
+        padding: 8px 44px 8px 20px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 0 4px 16px rgba(167, 139, 250, 0.25);
+        transition:
+          box-shadow 0.2s,
+          border-color 0.2s;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a78bfa' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
       }
-      .tab.active-all {
-        background: var(--purple);
-        color: white;
-        box-shadow: 0 4px 15px rgba(167, 139, 250, 0.4);
+
+      .multiplier-select:focus {
+        border-color: #c4b5fd;
+        box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+      }
+
+      /* Auto-result pills */
+      .result-pills {
+        display: flex;
+        gap: 10px;
+        margin-top: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .result-pill {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 50px;
+        padding: 8px 18px;
+        font-family: "Fredoka One", cursive;
+        font-size: 1.05rem;
+        border: 2px solid transparent;
+        animation: popIn 0.25s ease backwards;
+      }
+
+      .result-pill {
+        background: rgba(167, 139, 250, 0.1);
+        border-color: var(--purple);
+        color: var(--purple);
+      }
+
+      .result-pill .rp-eq {
+        opacity: 0.7;
+        font-size: 0.85rem;
+      }
+      .result-pill .rp-ans {
+        font-size: 1.3rem;
       }
 
       /* Modes */
@@ -520,11 +568,157 @@
         transition: width 0.5s ease;
       }
 
-      /* Keyframes */
-      @keyframes dropIn {
+      /* Hint modal */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(5, 4, 30, 0.82);
+        backdrop-filter: blur(6px);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .modal-overlay.open {
+        display: flex;
+        animation: fadeIn 0.2s ease;
+      }
+
+      .modal-box {
+        background: var(--card);
+        border: 2px solid #3a3570;
+        border-radius: 24px;
+        width: 100%;
+        max-width: 420px;
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 24px 20px 20px;
+        position: relative;
+        animation: slideUp 0.25s ease;
+      }
+
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+      }
+
+      .modal-title {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.5rem;
+        background: linear-gradient(135deg, var(--purple), #6bcb77);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .modal-close {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 2px solid #3a3570;
+        background: var(--bg);
+        color: var(--muted);
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+      }
+
+      .modal-close:hover {
+        border-color: var(--accent4);
+        color: var(--accent4);
+        transform: scale(1.1);
+      }
+
+      .hint-table {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .hint-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1.5px solid #2e2b5e;
+        border-radius: 12px;
+        padding: 10px 14px;
+        animation: fadeUp 0.3s ease backwards;
+      }
+
+      .hint-row .h-eq {
+        color: var(--muted);
+        font-size: 0.95rem;
+        font-weight: 700;
+        min-width: 80px;
+      }
+
+      .hint-row .h-bar-wrap {
+        flex: 1;
+        height: 10px;
+        background: #2e2b5e;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .hint-row .h-bar {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.4s ease;
+      }
+
+      .hint-row .h-ans {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.3rem;
+        min-width: 40px;
+        text-align: right;
+      }
+
+      /* Hint button */
+      .hint-btn {
+        width: 100%;
+        padding: 12px;
+        border-radius: 14px;
+        border: 2px dashed #3a3570;
+        background: rgba(167, 139, 250, 0.06);
+        color: var(--purple);
+        font-family: "Fredoka One", cursive;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .hint-btn:hover {
+        background: rgba(167, 139, 250, 0.14);
+        border-color: var(--purple);
+        transform: translateY(-1px);
+      }
+
+      @keyframes fadeIn {
         from {
           opacity: 0;
-          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
         }
         to {
           opacity: 1;
@@ -597,8 +791,9 @@
     <div class="container">
       <header>
         <h1>⭐ Multiplication Adventure!</h1>
-        <h1>Hello Noah, you're a super star ⭐</h1>
-        <p>Master the 4s, 5s and 6s times tables!</p>
+        <h2>Hello Noah!</h2>
+        <h3>Mme. Mususa class</h3>
+        <p>Master the times tables!</p>
       </header>
 
       <!-- Score bar -->
@@ -626,12 +821,38 @@
         <span class="star" id="s5">⭐</span>
       </div>
 
-      <!-- Tabs -->
-      <div class="tabs">
-        <button class="tab active-4" onclick="setTable(4)">× 4</button>
-        <button class="tab" onclick="setTable(5)">× 5</button>
-        <button class="tab" onclick="setTable(6)">× 6</button>
-        <button class="tab" onclick="setTable('all')">🎲 Mix</button>
+      <!-- Table Selector -->
+      <div class="multiplier-section">
+        <div class="multiplier-label">
+          Which times table do you want to practice?
+        </div>
+        <div class="multiplier-row">
+          <select
+            class="multiplier-select"
+            id="multiplierSelect"
+            onchange="onTableChange()"
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5" selected>5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+          <span
+            style="
+              font-family: &quot;Fredoka One&quot;, cursive;
+              font-size: 1.6rem;
+              color: var(--muted);
+            "
+            >times table</span
+          >
+        </div>
+        <div class="result-pills" id="resultPills"></div>
       </div>
 
       <!-- Modes -->
@@ -641,9 +862,6 @@
         </button>
         <button class="mode-btn" id="modeType" onclick="setMode('type')">
           ⌨️ Type It
-        </button>
-        <button class="mode-btn" id="modeTable" onclick="setMode('table')">
-          📋 Chart
         </button>
       </div>
 
@@ -656,7 +874,7 @@
       <div id="quizMode">
         <div class="question-card" id="questionCard">
           <div class="question-label">What is...</div>
-          <div class="question-text" id="questionText">4 × 3 = ?</div>
+          <div class="question-text" id="questionText">5 × 3 = ?</div>
           <div class="visual-aid" id="visualAid"></div>
         </div>
 
@@ -666,13 +884,16 @@
         <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
           Next Question ➜
         </button>
+        <button class="hint-btn" onclick="openHint()">
+          💡 Peek at the chart — need a hint?
+        </button>
       </div>
 
       <!-- TYPE MODE -->
       <div id="typeMode" style="display: none">
         <div class="question-card" id="qCardType">
           <div class="question-label">Type the answer!</div>
-          <div class="question-text" id="questionTextType">4 × 3 = ?</div>
+          <div class="question-text" id="questionTextType">5 × 3 = ?</div>
           <div class="visual-aid" id="visualAidType"></div>
         </div>
         <div class="type-area">
@@ -691,25 +912,29 @@
         <button class="next-btn" id="nextBtnType" onclick="nextQuestion()">
           Next Question ➜
         </button>
+        <button class="hint-btn" onclick="openHint()">
+          💡 Peek at the chart — need a hint?
+        </button>
       </div>
+    </div>
 
-      <!-- TABLE MODE -->
-      <div id="tableMode" style="display: none">
-        <div class="section-head">🔴 The 4 Times Table</div>
-        <div class="table-grid" id="table4"></div>
-        <div class="section-head" style="margin-top: 10px">
-          🟡 The 5 Times Table
+    <!-- Hint Modal -->
+    <div
+      class="modal-overlay"
+      id="hintModal"
+      onclick="closeHintOnOverlay(event)"
+    >
+      <div class="modal-box">
+        <div class="modal-header">
+          <div class="modal-title" id="modalTitle">5 Times Table 📋</div>
+          <button class="modal-close" onclick="closeHint()">✕</button>
         </div>
-        <div class="table-grid" id="table5"></div>
-        <div class="section-head" style="margin-top: 10px">
-          🟢 The 6 Times Table
-        </div>
-        <div class="table-grid" id="table6"></div>
+        <div class="hint-table" id="hintTable"></div>
       </div>
     </div>
 
     <script>
-      let currentTable = 4;
+      let currentTable = 5;
       let currentMode = "quiz";
       let currentQ = null;
       let answered = false;
@@ -717,6 +942,19 @@
       let stars = 0;
       let correct = 0;
       let questionCount = 0;
+
+      const pillColors = [
+        { bg: "rgba(255,107,107,0.12)", border: "#ff6b6b", color: "#ff6b6b" },
+        { bg: "rgba(255,179,71,0.12)", border: "#ffb347", color: "#ffb347" },
+        { bg: "rgba(255,217,61,0.12)", border: "#ffd93d", color: "#ffd93d" },
+        { bg: "rgba(107,203,119,0.12)", border: "#6bcb77", color: "#6bcb77" },
+        { bg: "rgba(77,182,172,0.12)", border: "#4db6ac", color: "#4db6ac" },
+        { bg: "rgba(100,181,246,0.12)", border: "#64b5f6", color: "#64b5f6" },
+        { bg: "rgba(167,139,250,0.12)", border: "#a78bfa", color: "#a78bfa" },
+        { bg: "rgba(240,113,255,0.12)", border: "#f071ff", color: "#f071ff" },
+        { bg: "rgba(255,107,149,0.12)", border: "#ff6b95", color: "#ff6b95" },
+        { bg: "rgba(255,204,128,0.12)", border: "#ffcc80", color: "#ffcc80" },
+      ];
 
       const praises = [
         "Amazing! 🎉",
@@ -735,30 +973,29 @@
         "So close! 🎯",
       ];
 
-      function getThemeClass() {
-        if (currentTable === 4) return "theme-4";
-        if (currentTable === 5) return "theme-5";
-        if (currentTable === 6) return "theme-6";
-        return "theme-all";
-      }
-
-      function getDotClass() {
-        if (currentTable === 4) return "dot-4";
-        if (currentTable === 5) return "dot-5";
-        if (currentTable === 6) return "dot-6";
-        return "dot-all";
-      }
-
-      function setTable(t) {
-        currentTable = t;
-        document.querySelectorAll(".tab").forEach((tab, i) => {
-          tab.className = "tab";
-          if (i === 0 && t === 4) tab.className = "tab active-4";
-          if (i === 1 && t === 5) tab.className = "tab active-5";
-          if (i === 2 && t === 6) tab.className = "tab active-6";
-          if (i === 3 && t === "all") tab.className = "tab active-all";
-        });
+      function onTableChange() {
+        currentTable = parseInt(
+          document.getElementById("multiplierSelect").value,
+        );
+        updateResultPills();
         nextQuestion();
+      }
+
+      function updateResultPills() {
+        const n = currentTable;
+        const pills = document.getElementById("resultPills");
+        pills.innerHTML = "";
+        for (let i = 1; i <= 10; i++) {
+          const c = pillColors[(i - 1) % pillColors.length];
+          const pill = document.createElement("div");
+          pill.className = "result-pill";
+          pill.style.background = c.bg;
+          pill.style.borderColor = c.border;
+          pill.style.color = c.color;
+          pill.style.animationDelay = (i - 1) * 0.04 + "s";
+          pill.innerHTML = `<span class="rp-eq">${n} × ${i} =</span><span class="rp-ans">${n * i}</span>`;
+          pills.appendChild(pill);
+        }
       }
 
       function setMode(m) {
@@ -773,25 +1010,53 @@
           m === "quiz" ? "block" : "none";
         document.getElementById("typeMode").style.display =
           m === "type" ? "block" : "none";
-        document.getElementById("tableMode").style.display =
-          m === "table" ? "block" : "none";
-        document.getElementById("progressWrap").style.display =
-          m === "table" ? "none" : "block";
-        if (m === "table") buildTables();
-        else nextQuestion();
+        nextQuestion();
+      }
+
+      function openHint() {
+        buildHintTable();
+        document.getElementById("hintModal").classList.add("open");
+      }
+
+      function closeHint() {
+        document.getElementById("hintModal").classList.remove("open");
+      }
+
+      function closeHintOnOverlay(e) {
+        if (e.target === document.getElementById("hintModal")) closeHint();
+      }
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeHint();
+      });
+
+      function buildHintTable() {
+        const n = currentTable;
+        document.getElementById("modalTitle").textContent =
+          `${n} Times Table 📋`;
+        const container = document.getElementById("hintTable");
+        container.innerHTML = "";
+        const maxVal = n * 10;
+        for (let i = 1; i <= 10; i++) {
+          const result = n * i;
+          const pct = Math.round((result / maxVal) * 100);
+          const c = pillColors[(i - 1) % pillColors.length];
+          const row = document.createElement("div");
+          row.className = "hint-row";
+          row.style.animationDelay = (i - 1) * 0.04 + "s";
+          row.innerHTML = `
+        <span class="h-eq">${n} × ${i} =</span>
+        <div class="h-bar-wrap"><div class="h-bar" style="width:${pct}%;background:${c.border}"></div></div>
+        <span class="h-ans" style="color:${c.color}">${result}</span>
+      `;
+          container.appendChild(row);
+        }
       }
 
       function generateQuestion() {
-        let table;
-        if (currentTable === "all") {
-          const opts = [4, 5, 6];
-          table = opts[Math.floor(Math.random() * opts.length)];
-        } else {
-          table = currentTable;
-        }
         const multiplier = Math.floor(Math.random() * 10) + 1;
-        const answer = table * multiplier;
-        return { table, multiplier, answer };
+        const answer = currentTable * multiplier;
+        return { table: currentTable, multiplier, answer };
       }
 
       function generateChoices(answer) {
@@ -809,17 +1074,9 @@
         container.innerHTML = "";
         const total = table * multiplier;
         if (total > 60) return;
-        const dotClass =
-          currentTable === 4
-            ? "dot-4"
-            : currentTable === 5
-              ? "dot-5"
-              : currentTable === 6
-                ? "dot-6"
-                : "dot-all";
         for (let i = 0; i < total; i++) {
           const dot = document.createElement("div");
-          dot.className = `dot ${dotClass}`;
+          dot.className = "dot dot-all";
           dot.style.animationDelay = i * 0.02 + "s";
           container.appendChild(dot);
         }
@@ -835,8 +1092,8 @@
           const qText = document.getElementById("questionText");
           const qCard = document.getElementById("questionCard");
           qText.textContent = `${currentQ.table} × ${currentQ.multiplier} = ?`;
-          qText.className = `question-text ${getThemeClass()}`;
-          qCard.className = `question-card ${getThemeClass()}`;
+          qText.className = "question-text theme-all";
+          qCard.className = "question-card theme-all";
           buildVisualAid(currentQ.table, currentQ.multiplier, "visualAid");
 
           const choices = generateChoices(currentQ.answer);
@@ -855,8 +1112,8 @@
           const qText = document.getElementById("questionTextType");
           const qCard = document.getElementById("qCardType");
           qText.textContent = `${currentQ.table} × ${currentQ.multiplier} = ?`;
-          qText.className = `question-text ${getThemeClass()}`;
-          qCard.className = `question-card ${getThemeClass()}`;
+          qText.className = "question-text theme-all";
+          qCard.className = "question-card theme-all";
           buildVisualAid(currentQ.table, currentQ.multiplier, "visualAidType");
 
           const inp = document.getElementById("typeInput");
@@ -876,7 +1133,6 @@
         document
           .querySelectorAll(".choice-btn")
           .forEach((b) => (b.disabled = true));
-
         if (isCorrect) {
           btn.classList.add("correct");
           handleCorrect("feedback");
@@ -898,7 +1154,6 @@
         if (isNaN(val)) return;
         answered = true;
         inp.disabled = true;
-
         if (val === currentQ.answer) {
           inp.classList.add("correct");
           handleCorrect("feedbackType");
@@ -922,20 +1177,14 @@
         correct++;
         document.getElementById("streakCount").textContent = streak;
         document.getElementById("correctCount").textContent = correct;
-
         if (streak % 3 === 0 && stars < 5) {
           stars++;
           document.getElementById("starCount").textContent = stars;
           document.getElementById("s" + stars).classList.add("earned");
         }
-
         const msg = praises[Math.floor(Math.random() * praises.length)];
-        if (fbId !== "feedbackType")
-          document.getElementById(fbId).innerHTML =
-            `<span class="good">${msg}</span>`;
-        else
-          document.getElementById(fbId).innerHTML =
-            `<span class="good">${msg}</span>`;
+        document.getElementById(fbId).innerHTML =
+          `<span class="good">${msg}</span>`;
       }
 
       function handleWrong(fbId, skipMsg = false) {
@@ -953,20 +1202,8 @@
         document.getElementById("progressBar").style.width = p + "%";
       }
 
-      function buildTables() {
-        [4, 5, 6].forEach((t) => {
-          const container = document.getElementById("table" + t);
-          container.innerHTML = "";
-          for (let i = 1; i <= 10; i++) {
-            const card = document.createElement("div");
-            card.className = `table-card t${t}`;
-            card.innerHTML = `<div class="eq">${t} × ${i} =</div><div class="result">${t * i}</div>`;
-            container.appendChild(card);
-          }
-        });
-      }
-
       // Init
+      updateResultPills();
       nextQuestion();
     </script>
   </body>
