@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nile & Zayne's Birthday!</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Boogaloo&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0d0d1f;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    font-family: 'Nunito', sans-serif;
+    padding: 30px 16px;
+    overflow-x: hidden;
+  }
+
+  /* ===== STAR FIELD ===== */
+  .stars-layer {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+  .star {
+    position: absolute; background: white; border-radius: 50%;
+    animation: twinkle var(--dur) infinite alternate;
+  }
+  @keyframes twinkle {
+    from { opacity: 0.15; transform: scale(1); }
+    to   { opacity: 1;    transform: scale(1.5); }
+  }
+
+  /* Occasional colour stars */
+  .star.gold   { background: #FFD700; box-shadow: 0 0 4px #FFD700; }
+  .star.red    { background: #ff6666; box-shadow: 0 0 4px #ff6666; }
+
+  /* ===== CARD ===== */
+  .card {
+    position: relative; z-index: 1;
+    width: 410px;
+    background: #f7f3e9;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow:
+      0 6px 0 #444,
+      0 10px 0 #222,
+      0 20px 60px rgba(0,0,0,0.85),
+      0 0 100px rgba(80,60,180,0.2);
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-10px); }
+  }
+
+  /* ===== LEGO BRICK ROWS (top & bottom) ===== */
+  .brick-row {
+    display: flex;
+    background: #f7f3e9;
+    padding: 10px 8px 0;
+    gap: 4px;
+    justify-content: center;
+  }
+  .brick-row.bottom { padding: 0 8px 12px; margin-top: 4px; }
+
+  .lego-brick {
+    position: relative;
+    border-radius: 3px;
+    height: 22px;
+    flex: 1;
+    max-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* raised edge */
+  .lego-brick::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 3px;
+    box-shadow: inset 0 -3px 0 rgba(0,0,0,0.25), inset 2px 0 0 rgba(255,255,255,0.15);
+  }
+  .lego-brick.b-red    { background: #e8001d; }
+  .lego-brick.b-blue   { background: #1565c0; }
+  .lego-brick.b-yellow { background: #FFD700; }
+  .lego-brick.b-green  { background: #2e7d32; }
+  .lego-brick.b-orange { background: #e65100; }
+  .lego-brick.b-purple { background: #6a1b9a; }
+  .lego-brick.b-white  { background: #ddd; }
+
+  /* stud on each brick */
+  .lego-brick .stud {
+    width: 14px; height: 7px;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    background: inherit;
+    filter: brightness(1.25);
+    position: absolute;
+    top: -6px;
+    border: 1.5px solid rgba(0,0,0,0.18);
+    border-bottom: none;
+  }
+
+  /* ===== RED HEADER ===== */
+  .brick-header {
+    background: #e8001d;
+    padding: 18px 20px 16px;
+    position: relative;
+    border-bottom: 5px solid #aa0000;
+  }
+  .brick-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(90deg, transparent 0, transparent 38px, rgba(0,0,0,0.07) 38px, rgba(0,0,0,0.07) 40px),
+      repeating-linear-gradient(0deg,  transparent 0, transparent 18px, rgba(0,0,0,0.07) 18px, rgba(0,0,0,0.07) 20px);
+    pointer-events: none;
+  }
+
+  /* Floating mushrooms & stars in header */
+  .deco {
+    position: absolute;
+    animation: deco-float 3s ease-in-out infinite alternate;
+    font-size: 22px;
+    opacity: 0.85;
+  }
+  .deco.d1 { top: 10px; right: 16px; animation-delay: 0s; font-size: 28px; }
+  .deco.d2 { top: 14px; left: 14px; animation-delay: 0.5s; font-size: 22px; }
+  .deco.d3 { bottom: 14px; right: 14px; animation-delay: 1s; font-size: 20px; }
+  .deco.d4 { bottom: 10px; left: 18px; animation-delay: 1.5s; font-size: 26px; }
+  @keyframes deco-float {
+    from { transform: translateY(0) rotate(-5deg); }
+    to   { transform: translateY(-6px) rotate(5deg); }
+  }
+
+  .invited-tag {
+    display: inline-block;
+    background: #FFD700; color: #aa0000;
+    font-size: 10px; font-weight: 900;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 3px;
+    margin-bottom: 8px;
+    box-shadow: 2px 2px 0 #b89b00;
+  }
+
+  .names {
+    font-family: 'Boogaloo', cursive;
+    font-size: 52px; color: #FFD700; line-height: 1;
+    text-shadow: 3px 3px 0 #aa0000, 5px 5px 0 rgba(0,0,0,0.25);
+  }
+
+  .bday-sub {
+    font-size: 14px; font-weight: 900;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: 2px; text-transform: uppercase; margin-top: 5px;
+  }
+
+  /* Age LEGO bricks */
+  .age-row {
+    display: flex; justify-content: center;
+    gap: 12px; margin-top: 16px;
+  }
+
+  .age-brick {
+    border-radius: 5px; padding: 8px 20px;
+    text-align: center; position: relative;
+    min-width: 84px;
+    animation: wiggle 3s ease-in-out infinite;
+  }
+  .age-brick.gold   { background: #FFD700; box-shadow: 0 5px 0 #b89b00, 0 8px 18px rgba(0,0,0,0.35); }
+  .age-brick.cobalt { background: #1565c0; box-shadow: 0 5px 0 #0a2e6e, 0 8px 18px rgba(0,0,0,0.35); animation-delay: 0.5s; }
+
+  /* Two studs on age bricks */
+  .age-brick .stud-l, .age-brick .stud-r {
+    position: absolute; top: -10px;
+    width: 22px; height: 10px;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    background: inherit; filter: brightness(1.15);
+    border: 2px solid rgba(0,0,0,0.15); border-bottom: none;
+  }
+  .age-brick .stud-l { left: 12px; }
+  .age-brick .stud-r { right: 12px; }
+
+  @keyframes wiggle {
+    0%,88%,100% { transform: rotate(0); }
+    91% { transform: rotate(-3deg); }
+    95% { transform: rotate(3deg); }
+  }
+
+  .age-num  { font-family: 'Boogaloo', cursive; font-size: 34px; color: white; line-height: 1; text-shadow: 2px 2px 0 rgba(0,0,0,0.2); }
+  .age-name { font-size: 10px; font-weight: 900; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 1px; }
+  .age-brick.gold .age-num  { color: #aa0000; text-shadow: 1px 1px 0 rgba(0,0,0,0.1); }
+  .age-brick.gold .age-name { color: rgba(140,0,0,0.65); }
+
+  /* ===== CONTENT BLOCKS ===== */
+  .blocks {
+    padding: 14px 14px 4px;
+    display: flex; flex-direction: column; gap: 8px;
+    background: #f7f3e9;
+  }
+
+  .block {
+    border-radius: 7px; padding: 12px 14px;
+    position: relative; overflow: hidden; color: white;
+  }
+  .block::after {
+    content: ''; position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(90deg, transparent 0, transparent 28px, rgba(0,0,0,0.04) 28px, rgba(0,0,0,0.04) 30px);
+    pointer-events: none;
+  }
+  .block.red    { background: #e8001d; border-bottom: 4px solid #aa0000; }
+  .block.blue   { background: #1565c0; border-bottom: 4px solid #0a2e6e; }
+  .block.green  { background: #2e7d32; border-bottom: 4px solid #1a4d1e; }
+  .block.purple { background: #6a1b9a; border-bottom: 4px solid #3d0f5c; }
+  .block.orange { background: #e65100; border-bottom: 4px solid #a33900; }
+
+  .block-tag {
+    font-size: 9px; font-weight: 900; letter-spacing: 3px;
+    text-transform: uppercase; opacity: 0.7; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .block-tag::before, .block-tag::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.25); }
+
+  .block-title { font-family: 'Boogaloo', cursive; font-size: 22px; line-height: 1.15; margin-bottom: 8px; }
+  .detail-row  { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; margin-bottom: 3px; }
+  .ticket-text { font-family: 'Boogaloo', cursive; font-size: 20px; text-align: center; line-height: 1.35; }
+
+  .after-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 5px; }
+  .after-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 800;
+    background: rgba(255,255,255,0.15);
+    padding: 5px 8px; border-radius: 4px;
+  }
+
+  .dropoff-text { font-size: 13px; font-weight: 800; line-height: 1.7; }
+  .rsvp-date    { font-family: 'Boogaloo', cursive; font-size: 24px; text-align: center; margin-bottom: 4px; }
+  .rsvp-contact { font-size: 13px; font-weight: 800; text-align: center; line-height: 1.6; opacity: 0.95; }
+
+  /* ===== FOOTER ===== */
+  .card-footer {
+    background: #f7f3e9;
+    padding: 10px 14px 2px; text-align: center;
+  }
+  .footer-text { font-family: 'Boogaloo', cursive; font-size: 16px; color: #aa0000; }
+
+  /* mushroom/star row in footer */
+  .icon-row {
+    text-align: center;
+    font-size: 20px;
+    letter-spacing: 6px;
+    padding: 6px 0 4px;
+    background: #f7f3e9;
+    animation: sway 3s ease-in-out infinite alternate;
+  }
+  @keyframes sway {
+    from { letter-spacing: 6px; }
+    to   { letter-spacing: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars-layer" id="stars"></div>
+
+<div class="card">
+
+  <!-- TOP LEGO BRICK ROW -->
+  <div class="brick-row" id="bricks-top"></div>
+
+  <!-- RED HEADER -->
+  <div class="brick-header">
+    <span class="deco d1">⭐</span>
+    <span class="deco d2">🍄</span>
+    <span class="deco d3">🍄</span>
+    <span class="deco d4">⭐</span>
+
+    <div class="invited-tag">🧱 You're Invited! 🧱</div>
+    <div class="names">Nile & Zayne's</div>
+    <div class="bday-sub">Birthday Celebration 🎉</div>
+
+    <div class="age-row">
+      <div class="age-brick gold">
+        <div class="stud-l"></div>
+        <div class="stud-r"></div>
+        <div class="age-num">8</div>
+        <div class="age-name">Nile</div>
+      </div>
+      <div class="age-brick cobalt">
+        <div class="stud-l"></div>
+        <div class="stud-r"></div>
+        <div class="age-num">6</div>
+        <div class="age-name">Zayne</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT BLOCKS -->
+  <div class="blocks">
+
+    <div class="block red">
+      <div class="block-tag">🎬 Part One</div>
+      <div class="block-title">Super Mario Galaxy<br>Movie Screening</div>
+      <div class="detail-row">📅 Saturday, April 4th</div>
+      <div class="detail-row">🕥 Doors 10:15am · Film 10:45am</div>
+      <div class="detail-row">📍 Cineplex, Fairview Mall</div>
+    </div>
+
+    <div class="block blue">
+      <div class="block-tag">🎟️ Tickets</div>
+      <div class="ticket-text">Tickets are on us!<br>1 child + 1 adult per family 🙌</div>
+    </div>
+
+    <div class="block green">
+      <div class="block-tag">🏠 Part Two — Back at Ours</div>
+      <div class="after-grid">
+        <div class="after-item">🍕 Pizza</div>
+        <div class="after-item">🎂 Birthday Cake</div>
+        <div class="after-item">🎈 Balloon Making</div>
+        <div class="after-item">🎨 Art Making</div>
+      </div>
+    </div>
+
+    <div class="block purple">
+      <div class="block-tag">💜 Can't Make the Movie?</div>
+      <div class="dropoff-text">
+        Drop your child directly at ours from <strong>1:00pm</strong> 🙌<br>
+        📍 <strong>211/40 Godstone Road</strong><br>
+        🔔 Buzz code: <strong>4228</strong>
+      </div>
+    </div>
+
+    <div class="block orange">
+      <div class="block-tag">📩 RSVP By</div>
+      <div class="rsvp-date">Thursday, March 20th</div>
+      <div class="rsvp-contact">Sura · 647 939 9331<br>sk@sura.me</div>
+    </div>
+
+  </div>
+
+  <div class="card-footer">
+    <div class="footer-text">Can't wait to celebrate with you!</div>
+  </div>
+
+  <!-- Mushroom/star icon row -->
+  <div class="icon-row">🍄 ⭐ 🧱 ⭐ 🍄</div>
+
+  <!-- BOTTOM LEGO BRICK ROW -->
+  <div class="brick-row bottom" id="bricks-bottom"></div>
+
+</div>
+
+<script>
+  // Star field
+  const starsEl = document.getElementById('stars');
+  const starTypes = ['', '', '', '', 'gold', 'gold', 'red'];
+  for (let i = 0; i < 140; i++) {
+    const s = document.createElement('div');
+    const type = starTypes[Math.floor(Math.random() * starTypes.length)];
+    s.className = 'star ' + type;
+    const size = type ? Math.random() * 3 + 1 : Math.random() * 2 + 0.5;
+    s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${1.5+Math.random()*2.5}s;animation-delay:${Math.random()*4}s;`;
+    starsEl.appendChild(s);
+  }
+
+  // LEGO brick rows
+  const brickColors = [
+    'b-red','b-blue','b-yellow','b-green','b-orange','b-purple','b-red','b-blue','b-yellow'
+  ];
+  ['bricks-top','bricks-bottom'].forEach(id => {
+    const row = document.getElementById(id);
+    brickColors.forEach(color => {
+      const b = document.createElement('div');
+      b.className = 'lego-brick ' + color;
+      const stud = document.createElement('div');
+      stud.className = 'stud';
+      b.appendChild(stud);
+      row.appendChild(b);
+    });
+  });
+</script>
+</body>
+</html>
