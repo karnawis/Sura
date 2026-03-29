@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Division Adventure!</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0f0e2a;
+        --card: #1a1840;
+        --accent4: #ff6b6b;
+        --accent5: #ffd93d;
+        --accent6: #6bcb77;
+        --purple: #a78bfa;
+        --star: #ffd93d;
+        --text: #f0eaff;
+        --muted: #8b84c0;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: "Nunito", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          radial-gradient(1px 1px at 10% 20%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 30% 60%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 50% 10%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 70% 80%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 90% 40%, white 0%, transparent 100%),
+          radial-gradient(1.5px 1.5px at 20% 90%, white 0%, transparent 100%),
+          radial-gradient(1.5px 1.5px at 80% 15%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 45% 50%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 60% 30%, white 0%, transparent 100%),
+          radial-gradient(1px 1px at 85% 70%, white 0%, transparent 100%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .container { position: relative; z-index: 1; width: 100%; max-width: 680px; }
+
+      header { text-align: center; margin-bottom: 24px; animation: dropIn 0.6s ease; }
+
+      header h1 {
+        font-family: "Fredoka One", cursive;
+        font-size: clamp(2rem, 6vw, 3rem);
+        background: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcb77);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.1;
+      }
+
+      header p { color: var(--muted); font-size: 1rem; margin-top: 6px; }
+
+      .scorebar { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+
+      .score-pill {
+        background: var(--card);
+        border: 2px solid #2e2b5e;
+        border-radius: 50px;
+        padding: 8px 20px;
+        font-weight: 800;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .score-pill .icon { font-size: 1.3rem; }
+      .score-pill .val { font-size: 1.2rem; }
+
+      .multiplier-section {
+        background: var(--card);
+        border: 2px solid #2e2b5e;
+        border-radius: 20px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+      }
+
+      .multiplier-label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 10px;
+        text-align: center;
+      }
+
+      .multiplier-row { display: flex; align-items: center; gap: 14px; justify-content: center; }
+
+      .multiplier-select {
+        appearance: none;
+        -webkit-appearance: none;
+        background: var(--bg);
+        border: 3px solid var(--purple);
+        border-radius: 14px;
+        color: var(--text);
+        font-family: "Fredoka One", cursive;
+        font-size: 2rem;
+        padding: 8px 44px 8px 20px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 0 4px 16px rgba(167, 139, 250, 0.25);
+        transition: box-shadow 0.2s, border-color 0.2s;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a78bfa' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+      }
+
+      .multiplier-select:focus {
+        border-color: #c4b5fd;
+        box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+      }
+
+      .result-pills { display: flex; gap: 10px; margin-top: 14px; justify-content: center; flex-wrap: wrap; }
+
+      .result-pill {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 50px;
+        padding: 8px 18px;
+        font-family: "Fredoka One", cursive;
+        font-size: 1.05rem;
+        border: 2px solid transparent;
+        animation: popIn 0.25s ease backwards;
+        background: rgba(167, 139, 250, 0.1);
+        border-color: var(--purple);
+        color: var(--purple);
+      }
+
+      .result-pill .rp-eq { opacity: 0.7; font-size: 0.85rem; }
+      .result-pill .rp-ans { font-size: 1.3rem; }
+
+      .modes { display: flex; gap: 8px; margin-bottom: 20px; }
+
+      .mode-btn {
+        flex: 1;
+        padding: 8px;
+        border: 2px solid #2e2b5e;
+        border-radius: 12px;
+        background: var(--card);
+        color: var(--muted);
+        font-family: "Nunito", sans-serif;
+        font-weight: 800;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+      }
+
+      .mode-btn.active {
+        border-color: var(--purple);
+        color: var(--purple);
+        background: rgba(167, 139, 250, 0.1);
+      }
+
+      .question-card {
+        background: var(--card);
+        border: 2px solid #2e2b5e;
+        border-radius: 24px;
+        padding: 30px 24px;
+        text-align: center;
+        margin-bottom: 20px;
+        animation: fadeUp 0.4s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .question-card::before {
+        content: "";
+        position: absolute;
+        top: -60px; right: -60px;
+        width: 160px; height: 160px;
+        border-radius: 50%;
+        opacity: 0.06;
+        background: var(--purple);
+      }
+
+      .question-label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+
+      .question-text {
+        font-family: "Fredoka One", cursive;
+        font-size: clamp(2.5rem, 10vw, 4rem);
+        line-height: 1;
+        margin-bottom: 6px;
+        color: var(--purple);
+      }
+
+      /* Division visual: groups of dots */
+      .visual-groups {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin: 14px 0 6px;
+        flex-wrap: wrap;
+        min-height: 40px;
+      }
+
+      .visual-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
+        justify-content: center;
+        max-width: 70px;
+        padding: 6px;
+        border: 2px dashed rgba(167,139,250,0.3);
+        border-radius: 10px;
+      }
+
+      .vis-div {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.4rem;
+        color: var(--muted);
+        padding: 0 2px;
+      }
+
+      .dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        animation: popIn 0.2s ease backwards;
+      }
+
+      .dot-a { background: rgba(255, 107, 107, 0.5); border: 2px solid var(--accent4); }
+      .dot-b { background: rgba(107, 203, 119, 0.5); border: 2px solid var(--accent6); }
+      .dot-c { background: rgba(255, 217, 61, 0.5); border: 2px solid var(--accent5); }
+      .dot-d { background: rgba(167, 139, 250, 0.5); border: 2px solid var(--purple); }
+      .dot-e { background: rgba(100, 181, 246, 0.5); border: 2px solid #64b5f6; }
+
+      .choices {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .choice-btn {
+        padding: 18px;
+        border-radius: 18px;
+        border: 3px solid #2e2b5e;
+        background: var(--card);
+        color: var(--text);
+        font-family: "Fredoka One", cursive;
+        font-size: 1.8rem;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .choice-btn:hover:not(:disabled) {
+        border-color: var(--purple);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      }
+
+      .choice-btn.correct { background: var(--accent6) !important; border-color: var(--accent6) !important; color: white !important; animation: bounce 0.4s ease; }
+      .choice-btn.wrong { background: var(--accent4) !important; border-color: var(--accent4) !important; color: white !important; animation: shake 0.4s ease; }
+      .choice-btn:disabled { cursor: not-allowed; }
+
+      .type-area { display: flex; gap: 10px; margin-bottom: 20px; }
+
+      .type-input {
+        flex: 1;
+        padding: 16px 20px;
+        font-family: "Fredoka One", cursive;
+        font-size: 2rem;
+        border-radius: 18px;
+        border: 3px solid #2e2b5e;
+        background: var(--card);
+        color: var(--text);
+        text-align: center;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      .type-input:focus { border-color: var(--purple); }
+      .type-input.correct { border-color: var(--accent6); background: rgba(107,203,119,0.15); }
+      .type-input.wrong { border-color: var(--accent4); background: rgba(255,107,107,0.15); }
+
+      .submit-btn {
+        padding: 16px 24px;
+        border-radius: 18px;
+        border: none;
+        background: var(--purple);
+        color: white;
+        font-family: "Fredoka One", cursive;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 15px rgba(167,139,250,0.3);
+      }
+
+      .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(167,139,250,0.4); }
+
+      .feedback {
+        text-align: center;
+        font-family: "Fredoka One", cursive;
+        font-size: 1.5rem;
+        min-height: 40px;
+        margin-bottom: 16px;
+        animation: popIn 0.3s ease;
+      }
+
+      .feedback.good { color: var(--accent6); }
+      .feedback.bad { color: var(--accent4); }
+
+      .next-btn {
+        width: 100%;
+        padding: 16px;
+        border-radius: 18px;
+        border: none;
+        background: linear-gradient(135deg, #6bcb77, #4db6ac);
+        color: white;
+        font-family: "Fredoka One", cursive;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 15px rgba(107,203,119,0.3);
+        margin-bottom: 16px;
+        display: none;
+      }
+
+      .next-btn.visible { display: block; animation: fadeUp 0.3s ease; }
+      .next-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(107,203,119,0.4); }
+
+      .stars-row { display: flex; justify-content: center; gap: 6px; margin-bottom: 10px; min-height: 32px; }
+
+      .star { font-size: 1.8rem; animation: popIn 0.3s ease backwards; filter: grayscale(1); opacity: 0.3; }
+      .star.earned { filter: none; opacity: 1; }
+
+      .progress-wrap { background: #2e2b5e; border-radius: 10px; height: 10px; margin-bottom: 20px; overflow: hidden; }
+
+      .progress-bar {
+        height: 100%;
+        border-radius: 10px;
+        background: linear-gradient(90deg, var(--purple), #6bcb77);
+        transition: width 0.5s ease;
+      }
+
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(5,4,30,0.82);
+        backdrop-filter: blur(6px);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+
+      .modal-box {
+        background: var(--card);
+        border: 2px solid #3a3570;
+        border-radius: 24px;
+        width: 100%;
+        max-width: 420px;
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 24px 20px 20px;
+        position: relative;
+        animation: slideUp 0.25s ease;
+      }
+
+      .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+
+      .modal-title {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.5rem;
+        background: linear-gradient(135deg, var(--purple), #6bcb77);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .modal-close {
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        border: 2px solid #3a3570;
+        background: var(--bg);
+        color: var(--muted);
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+      }
+
+      .modal-close:hover { border-color: var(--accent4); color: var(--accent4); transform: scale(1.1); }
+
+      .hint-table { display: flex; flex-direction: column; gap: 8px; }
+
+      .hint-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255,255,255,0.03);
+        border: 1.5px solid #2e2b5e;
+        border-radius: 12px;
+        padding: 10px 14px;
+        animation: fadeUp 0.3s ease backwards;
+      }
+
+      .hint-row .h-eq { color: var(--muted); font-size: 0.95rem; font-weight: 700; min-width: 90px; }
+      .hint-row .h-bar-wrap { flex: 1; height: 10px; background: #2e2b5e; border-radius: 10px; overflow: hidden; }
+      .hint-row .h-bar { height: 100%; border-radius: 10px; transition: width 0.4s ease; }
+      .hint-row .h-ans { font-family: "Fredoka One", cursive; font-size: 1.3rem; min-width: 40px; text-align: right; }
+
+      .hint-btn {
+        width: 100%;
+        padding: 12px;
+        border-radius: 14px;
+        border: 2px dashed #3a3570;
+        background: rgba(167,139,250,0.06);
+        color: var(--purple);
+        font-family: "Fredoka One", cursive;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .hint-btn:hover { background: rgba(167,139,250,0.14); border-color: var(--purple); transform: translateY(-1px); }
+
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes slideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes popIn { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+      @keyframes bounce { 0%, 100% { transform: scale(1); } 40% { transform: scale(1.1); } 70% { transform: scale(0.95); } }
+      @keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>➗ Division Adventure!</h1>
+        <h2>Hello Noah!</h2>
+        <h3>Mme. Mususa class</h3>
+        <p>Master dividing numbers!</p>
+      </header>
+
+      <div class="scorebar">
+        <div class="score-pill"><span class="icon">⭐</span>Stars:<span class="val" id="starCount">0</span></div>
+        <div class="score-pill"><span class="icon">🔥</span>Streak:<span class="val" id="streakCount">0</span></div>
+        <div class="score-pill"><span class="icon">✅</span>Correct:<span class="val" id="correctCount">0</span></div>
+      </div>
+
+      <div class="stars-row" id="starsRow">
+        <span class="star" id="s1">⭐</span>
+        <span class="star" id="s2">⭐</span>
+        <span class="star" id="s3">⭐</span>
+        <span class="star" id="s4">⭐</span>
+        <span class="star" id="s5">⭐</span>
+      </div>
+
+      <!-- Divisor Selector -->
+      <div class="multiplier-section">
+        <div class="multiplier-label">Which number do you want to divide by?</div>
+        <div class="multiplier-row">
+          <select class="multiplier-select" id="divisorSelect" onchange="onTableChange()">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5" selected>5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+          <span style="font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--muted);">division facts</span>
+        </div>
+        <div class="result-pills" id="resultPills"></div>
+      </div>
+
+      <div class="modes">
+        <button class="mode-btn active" id="modeQuiz" onclick="setMode('quiz')">🎯 Quiz</button>
+        <button class="mode-btn" id="modeType" onclick="setMode('type')">⌨️ Type It</button>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar" style="width:0%"></div>
+      </div>
+
+      <!-- QUIZ MODE -->
+      <div id="quizMode">
+        <div class="question-card" id="questionCard">
+          <div class="question-label">What is...</div>
+          <div class="question-text" id="questionText">10 ÷ 5 = ?</div>
+          <div class="visual-groups" id="visualAid"></div>
+        </div>
+        <div class="choices" id="choicesGrid"></div>
+        <div class="feedback" id="feedback"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question ➜</button>
+        <button class="hint-btn" onclick="openHint()">💡 Peek at the chart — need a hint?</button>
+      </div>
+
+      <!-- TYPE MODE -->
+      <div id="typeMode" style="display:none">
+        <div class="question-card" id="qCardType">
+          <div class="question-label">Type the answer!</div>
+          <div class="question-text" id="questionTextType">10 ÷ 5 = ?</div>
+          <div class="visual-groups" id="visualAidType"></div>
+        </div>
+        <div class="type-area">
+          <input class="type-input" id="typeInput" type="number" placeholder="?" autocomplete="off" min="0" max="999" />
+          <button class="submit-btn" onclick="checkType()">Go! 🚀</button>
+        </div>
+        <div class="feedback" id="feedbackType"></div>
+        <button class="next-btn" id="nextBtnType" onclick="nextQuestion()">Next Question ➜</button>
+        <button class="hint-btn" onclick="openHint()">💡 Peek at the chart — need a hint?</button>
+      </div>
+    </div>
+
+    <!-- Hint Modal -->
+    <div class="modal-overlay" id="hintModal" onclick="closeHintOnOverlay(event)">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div class="modal-title" id="modalTitle">÷ 5 Division Chart 📋</div>
+          <button class="modal-close" onclick="closeHint()">✕</button>
+        </div>
+        <div class="hint-table" id="hintTable"></div>
+      </div>
+    </div>
+
+    <script>
+      let currentDivisor = 5;
+      let currentMode = "quiz";
+      let currentQ = null;
+      let answered = false;
+      let streak = 0;
+      let stars = 0;
+      let correct = 0;
+      let questionCount = 0;
+
+      const dotClasses = ["dot-a","dot-b","dot-c","dot-d","dot-e"];
+
+      const pillColors = [
+        { bg: "rgba(255,107,107,0.12)", border: "#ff6b6b", color: "#ff6b6b" },
+        { bg: "rgba(255,179,71,0.12)", border: "#ffb347", color: "#ffb347" },
+        { bg: "rgba(255,217,61,0.12)", border: "#ffd93d", color: "#ffd93d" },
+        { bg: "rgba(107,203,119,0.12)", border: "#6bcb77", color: "#6bcb77" },
+        { bg: "rgba(77,182,172,0.12)", border: "#4db6ac", color: "#4db6ac" },
+        { bg: "rgba(100,181,246,0.12)", border: "#64b5f6", color: "#64b5f6" },
+        { bg: "rgba(167,139,250,0.12)", border: "#a78bfa", color: "#a78bfa" },
+        { bg: "rgba(240,113,255,0.12)", border: "#f071ff", color: "#f071ff" },
+        { bg: "rgba(255,107,149,0.12)", border: "#ff6b95", color: "#ff6b95" },
+        { bg: "rgba(255,204,128,0.12)", border: "#ffcc80", color: "#ffcc80" },
+      ];
+
+      const praises = ["Amazing! 🎉","Super! ✨","You got it! 🌟","Brilliant! 🚀","Awesome! 💥","Perfect! 🏆","Great job! 🎊"];
+      const tryAgain = ["Almost! 💪","Try again! 🔄","Don't give up! 🌈","Keep going! 💡","So close! 🎯"];
+
+      function onTableChange() {
+        currentDivisor = parseInt(document.getElementById("divisorSelect").value);
+        updateResultPills();
+        nextQuestion();
+      }
+
+      function updateResultPills() {
+        const d = currentDivisor;
+        const pills = document.getElementById("resultPills");
+        pills.innerHTML = "";
+        for (let i = 1; i <= 10; i++) {
+          const dividend = d * i;
+          const c = pillColors[(i - 1) % pillColors.length];
+          const pill = document.createElement("div");
+          pill.className = "result-pill";
+          pill.style.background = c.bg;
+          pill.style.borderColor = c.border;
+          pill.style.color = c.color;
+          pill.style.animationDelay = (i - 1) * 0.04 + "s";
+          pill.innerHTML = `<span class="rp-eq">${dividend} ÷ ${d} =</span><span class="rp-ans">${i}</span>`;
+          pills.appendChild(pill);
+        }
+      }
+
+      function setMode(m) {
+        currentMode = m;
+        document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+        document.getElementById("mode" + m.charAt(0).toUpperCase() + m.slice(1)).classList.add("active");
+        document.getElementById("quizMode").style.display = m === "quiz" ? "block" : "none";
+        document.getElementById("typeMode").style.display = m === "type" ? "block" : "none";
+        nextQuestion();
+      }
+
+      function openHint() { buildHintTable(); document.getElementById("hintModal").classList.add("open"); }
+      function closeHint() { document.getElementById("hintModal").classList.remove("open"); }
+      function closeHintOnOverlay(e) { if (e.target === document.getElementById("hintModal")) closeHint(); }
+      document.addEventListener("keydown", e => { if (e.key === "Escape") closeHint(); });
+
+      function buildHintTable() {
+        const d = currentDivisor;
+        document.getElementById("modalTitle").textContent = `÷ ${d} Division Chart 📋`;
+        const container = document.getElementById("hintTable");
+        container.innerHTML = "";
+        for (let i = 1; i <= 10; i++) {
+          const dividend = d * i;
+          const pct = i * 10;
+          const c = pillColors[(i - 1) % pillColors.length];
+          const row = document.createElement("div");
+          row.className = "hint-row";
+          row.style.animationDelay = (i - 1) * 0.04 + "s";
+          row.innerHTML = `
+            <span class="h-eq">${dividend} ÷ ${d} =</span>
+            <div class="h-bar-wrap"><div class="h-bar" style="width:${pct}%;background:${c.border}"></div></div>
+            <span class="h-ans" style="color:${c.color}">${i}</span>
+          `;
+          container.appendChild(row);
+        }
+      }
+
+      // Division questions: dividend = divisor × quotient (quotient 1–10), answer = quotient
+      function generateQuestion() {
+        const quotient = Math.floor(Math.random() * 10) + 1;
+        const dividend = currentDivisor * quotient;
+        return { dividend, divisor: currentDivisor, answer: quotient };
+      }
+
+      function generateChoices(answer) {
+        const choices = new Set([answer]);
+        while (choices.size < 4) {
+          const delta = Math.floor(Math.random() * 8) - 4;
+          const wrong = Math.max(1, answer + delta);
+          if (wrong !== answer) choices.add(wrong);
+        }
+        return [...choices].sort(() => Math.random() - 0.5);
+      }
+
+      // Visual: show dots split into equal groups
+      function buildVisualAid(dividend, divisor, answer, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+        if (dividend > 50) return; // skip for large numbers
+
+        for (let g = 0; g < answer; g++) {
+          const group = document.createElement("div");
+          group.className = "visual-group";
+          const dotClass = dotClasses[g % dotClasses.length];
+          for (let d = 0; d < divisor; d++) {
+            const dot = document.createElement("div");
+            dot.className = `dot ${dotClass}`;
+            dot.style.animationDelay = (g * divisor + d) * 0.025 + "s";
+            group.appendChild(dot);
+          }
+          container.appendChild(group);
+        }
+      }
+
+      function nextQuestion() {
+        answered = false;
+        currentQ = generateQuestion();
+        questionCount++;
+        updateProgress();
+
+        if (currentMode === "quiz") {
+          document.getElementById("questionText").textContent = `${currentQ.dividend} ÷ ${currentQ.divisor} = ?`;
+          buildVisualAid(currentQ.dividend, currentQ.divisor, currentQ.answer, "visualAid");
+
+          const choices = generateChoices(currentQ.answer);
+          const grid = document.getElementById("choicesGrid");
+          grid.innerHTML = "";
+          choices.forEach(c => {
+            const btn = document.createElement("button");
+            btn.className = "choice-btn";
+            btn.textContent = c;
+            btn.onclick = () => checkAnswer(c, btn);
+            grid.appendChild(btn);
+          });
+          document.getElementById("feedback").textContent = "";
+          document.getElementById("nextBtn").classList.remove("visible");
+        } else {
+          document.getElementById("questionTextType").textContent = `${currentQ.dividend} ÷ ${currentQ.divisor} = ?`;
+          buildVisualAid(currentQ.dividend, currentQ.divisor, currentQ.answer, "visualAidType");
+
+          const inp = document.getElementById("typeInput");
+          inp.value = "";
+          inp.className = "type-input";
+          inp.disabled = false;
+          inp.focus();
+          document.getElementById("feedbackType").textContent = "";
+          document.getElementById("nextBtnType").classList.remove("visible");
+        }
+      }
+
+      function checkAnswer(val, btn) {
+        if (answered) return;
+        answered = true;
+        const isCorrect = val === currentQ.answer;
+        document.querySelectorAll(".choice-btn").forEach(b => b.disabled = true);
+        if (isCorrect) {
+          btn.classList.add("correct");
+          handleCorrect("feedback");
+        } else {
+          btn.classList.add("wrong");
+          document.querySelectorAll(".choice-btn").forEach(b => {
+            if (parseInt(b.textContent) === currentQ.answer) b.classList.add("correct");
+          });
+          handleWrong("feedback");
+        }
+        document.getElementById("nextBtn").classList.add("visible");
+      }
+
+      function checkType() {
+        if (answered) return;
+        const inp = document.getElementById("typeInput");
+        const val = parseInt(inp.value);
+        if (isNaN(val)) return;
+        answered = true;
+        inp.disabled = true;
+        if (val === currentQ.answer) {
+          inp.classList.add("correct");
+          handleCorrect("feedbackType");
+        } else {
+          inp.classList.add("wrong");
+          document.getElementById("feedbackType").innerHTML =
+            `<span style="color:var(--accent4)">Not quite! The answer is <span style="color:var(--accent6)">${currentQ.answer}</span> 💡</span>`;
+          handleWrong("feedbackType", true);
+        }
+        document.getElementById("nextBtnType").classList.add("visible");
+      }
+
+      document.getElementById("typeInput").addEventListener("keydown", e => { if (e.key === "Enter") checkType(); });
+
+      function handleCorrect(fbId) {
+        streak++; correct++;
+        document.getElementById("streakCount").textContent = streak;
+        document.getElementById("correctCount").textContent = correct;
+        if (streak % 3 === 0 && stars < 5) {
+          stars++;
+          document.getElementById("starCount").textContent = stars;
+          document.getElementById("s" + stars).classList.add("earned");
+        }
+        const msg = praises[Math.floor(Math.random() * praises.length)];
+        document.getElementById(fbId).innerHTML = `<span class="good">${msg}</span>`;
+      }
+
+      function handleWrong(fbId, skipMsg = false) {
+        streak = 0;
+        document.getElementById("streakCount").textContent = streak;
+        if (!skipMsg) {
+          const msg = tryAgain[Math.floor(Math.random() * tryAgain.length)];
+          document.getElementById(fbId).innerHTML =
+            `<span class="bad">${msg} Answer: <strong style="color:var(--accent6)">${currentQ.answer}</strong></span>`;
+        }
+      }
+
+      function updateProgress() {
+        const p = Math.min((correct / Math.max(questionCount, 1)) * 100, 100);
+        document.getElementById("progressBar").style.width = p + "%";
+      }
+
+      // Init
+      updateResultPills();
+      nextQuestion();
+    </script>
+  </body>
+</html>
